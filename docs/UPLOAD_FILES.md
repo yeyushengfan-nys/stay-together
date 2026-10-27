@@ -1,8 +1,8 @@
 # 本次公开文件清单
 
-当前公开源码对应v55，源提交682d026，扩展0.2.7。仅包含下列文件，不含聊天、客服原文、私人证据或实际部署身份。
+当前公开源码对应v56，源提交708c285，扩展0.2.7。仅包含下列文件，不含聊天、客服原文、私人证据或实际部署身份。
 
-共243个文件，含此清单。
+共246个文件，含此清单。
 
 ```text
 .env.example
@@ -226,6 +226,9 @@ tests/test-decision-ui.mjs
 tests/test-evidence-preservation.mjs
 tests/test-multi-hotel-coverage-repair.mjs
 tests/test-paired-citations.mjs
+tests/test-policy-evidence.mjs
+tests/test-policy-recommendation.mjs
+tests/test-policy-ui.mjs
 tests/test-progressive-selection.mjs
 tests/test-quote-fact-boundary.mjs
 tests/test-quote-handoff.mjs

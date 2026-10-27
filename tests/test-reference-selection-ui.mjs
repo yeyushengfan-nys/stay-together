@@ -44,6 +44,15 @@ ctx.state.aiResult.fingerprint='old';html=ctx.resultHTML();assert(html.includes(
 let requestScope='reference_selection';ctx.aiRequestDecisionScope=()=>requestScope;
 const readyRow={hotel:{id:'ready',name:'模拟参考价已齐',room:'模拟双床房',price:null,evidence:[],packageMatch:{enabled:true,selectedOffer:{id:'selected',listNightly:381},checks:[],requirements:{}}},code:'needs_evidence',formalEligible:false,budget:{basis:'reference',amount:381,ceiling:465,within:true},missing:[{key:'budget',label:'最终含税价（已有参考价仅用于初筛）'}],conflicts:[],known:[],optionalUnknown:[{key:'view',label:'景观符合期望'}]};
 const rowBefore=JSON.stringify(readyRow);ctx.HotelDecisionSummary.build=()=>[readyRow];
+// Conditional service availability must remain visibly conditional. It never
+// means an order was created, paid or held, and must not apply on another offer.
+const scopedPolicyRow={...readyRow,known:[{key:'invoice',label:'有发票资料'},{key:'lateCheckin',label:'有晚到资料'}],policy:{controlledKeys:['invoice','lateCheckin'],applied:[{claims:{invoice:true,lateCheckin:true},scope:{provider:'ctrip'},requiresPaidConfirmed:true}]}};
+const scopedPolicyHTML=ctx.decisionCardHTML(scopedPolicyRow);
+assert(scopedPolicyHTML.includes('携程：可开所需发票；支持所咨询的晚到时段'));
+assert(scopedPolicyHTML.includes('仅在在线付款且酒店／供应商确认后生效'));
+assert(scopedPolicyHTML.includes('并非已经预订或保房'));
+assert(!scopedPolicyHTML.includes('<li>有晚到资料</li>'));
+assert(!ctx.decisionCardHTML({...scopedPolicyRow,policy:{controlledKeys:['invoice','lateCheckin'],applied:[]}}).includes('已核实的套餐政策'));
 assert.equal(ctx.referenceReady(readyRow),true);
 html=ctx.decisionCardHTML(readyRow);assert(html.includes('参考价条件证据已齐，可生成选择'));assert(html.includes('decision-badge ready'));
 assert(html.includes('最终含税应付价与完整取消责任仍需预订前核对'));assert(!html.includes('套餐已匹配 · 待核必要证据'));assert(!html.includes('房价或必要套餐信息仍需核对'));

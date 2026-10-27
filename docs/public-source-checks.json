@@ -1,10 +1,7 @@
 {
-  "date": "2026-10-27",
-  "source_version": "Sites v55 / extension 0.2.7",
-  "source_commit": "682d0260270cfa503f206234e95d7d2ddc20689c",
   "kind": "offline_mock_regression_not_real_users",
-  "count": 39,
-  "passed": 39,
+  "count": 42,
+  "passed": 42,
   "failed": 0,
   "tests": [
     {
@@ -96,6 +93,18 @@
       "exit_code": 0
     },
     {
+      "file": "tests/test-policy-evidence.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-policy-recommendation.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-policy-ui.mjs",
+      "exit_code": 0
+    },
+    {
       "file": "tests/test-progressive-selection.mjs",
       "exit_code": 0
     },
@@ -163,5 +172,13 @@
       "file": "tests/test-verification-shortlist.mjs",
       "exit_code": 0
     }
-  ]
+  ],
+  "real_network_blocked": true,
+  "date": "2026-10-27",
+  "source_version": "Sites v56 / extension 0.2.7",
+  "source_commit": "708c28530ca578e16a10280372b17db5eb7918d5",
+  "public_copy_framework_build_this_iteration": false,
+  "source_framework_build_and_deployment": "passed",
+  "public_copy_clean_dependency_install_verified": false,
+  "live_hotel_success_not_implied": true
 }

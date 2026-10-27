@@ -30,7 +30,7 @@
     const softBudgets = members.filter(p => positive(p.budget)).map(p => p.budget);
     const ceiling = (hardBudgets.length ? hardBudgets : softBudgets).length ? Math.min(...(hardBudgets.length ? hardBudgets : softBudgets)) : null;
     return (Array.isArray(hotels) ? hotels : []).map(hotel => {
-      const {facts, conflicts: sourceConflicts} = engine.factsFor(hotel);
+      const {facts, conflicts: sourceConflicts, policy} = engine.factsFor(hotel, trip);
       const known = bucket(), missing = bucket(), conflicts = bucket(), optionalUnknown = bucket();
       const required = new Set(), preferred = new Set();
       for (const p of members) {
@@ -79,11 +79,11 @@
         if (basis !== 'verified') missing.add('budget', basis === 'reference' ? '最终含税价（已有参考价仅用于初筛）' : '最终含税价');
         else if (!budget.within) conflicts.add('budget', '已核实房价超出必要预算');
       } else if (basis === 'unknown') optionalUnknown.add('budget', '房型价格');
-      const evaluation = engine.evaluate(hotel, members, year);
+      const evaluation = engine.evaluate(hotel, members, year, trip);
       const formalEligible = members.length > 0 && !evaluation.blocks.length && !evaluation.pending.length && !conflicts.items.length && !missing.items.length;
       const code = conflicts.items.length ? 'excluded' : basis === 'reference' && hardBudgets.length && budget.within === false ? 'over_reference_budget' : formalEligible ? 'ready' : 'needs_evidence';
       const label = {ready:'满足已确认必要条件', needs_evidence:'还需核实' + missing.items.length + '项必要信息', excluded:'不符合必要条件', over_reference_budget:'当前参考价超预算'}[code];
-      return {hotel, facts, code, label, known:known.items, missing:missing.items, conflicts:conflicts.items, optionalUnknown:optionalUnknown.items, budget, formalEligible};
+      return {hotel, facts, policy, code, label, known:known.items, missing:missing.items, conflicts:conflicts.items, optionalUnknown:optionalUnknown.items, budget, formalEligible};
     });
   }
   const api = {build};
