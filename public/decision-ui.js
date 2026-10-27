@@ -149,10 +149,20 @@ collectorHTML=function(){
 };
 
 const fullComparisonRender=renderCompare;
+function decisionBrowserContextHTML(){
+ if(state.mode!=='trip')return '';
+ return '<div class="notice browser-trip-context"><b>当前浏览器行程：'+E(state.trip.city||'城市未设置')+' · '+E(state.trip.checkin||'入住未设置')+' — '+E(state.trip.checkout||'退房未设置')+' · '+E(state.trip.rooms||1)+'间 / '+E(state.trip.adults||state.people.length)+'成人</b><p>资料和同行偏好仅保存在此浏览器，不会自动同步其他浏览器；这里显示的是本浏览器保存的行程。</p></div>';
+}
+function decisionArchiveHTML(){
+ if(state.mode!=='trip'||typeof HotelJourney==='undefined')return '';
+ const history=HotelJourney.scope(state,{selection:false,includeHistory:true}).filter(h=>!HotelJourney.belongs(h,state.trip,state.people));
+ return history.length?'<details class="decision-details historical-hotel-record"><summary>历史资料 '+history.length+' 家（未加入本次行程）</summary><p class="decision-muted">保留原资料和证据，不作为本次候选；重新加入会清空旧报价，需核对当前房价。</p><ul>'+history.map(h=>'<li><b>'+E(h.name)+'</b> <button class="text-button" data-action="evidence-hotel" data-id="'+E(h.id)+'">查看资料</button> <button class="text-button" data-action="join-history" data-id="'+E(h.id)+'">加入本次行程</button></li>').join('')+'</ul></details>':'';
+}
 renderCompare=function(){
  fullComparisonRender();
  const main=$('#main'),hotels=decisionScopedHotels();
  main.classList.add('decision-page');
+ main.insertAdjacentHTML('afterbegin',decisionBrowserContextHTML());
  const banner=main.querySelector('.banner.info');if(banner)banner.remove();
  const summary=main.querySelector('.summary-line');
  if(summary)summary.innerHTML='<span><b>'+hotels.length+'</b>家候选</span><span><b>'+state.people.length+'</b>位同行人</span><span>'+E(state.trip.city)+' · '+E(state.trip.checkin)+' — '+E(state.trip.checkout)+'</span>';
@@ -164,7 +174,7 @@ renderCompare=function(){
   const legal=search.querySelector('#discovery-form > .disclaimer');if(legal)legal.textContent='通过本机 Chrome 读取携程、同程页面；登录或验证码需要你处理。';
   if(hotels.length){const details=document.createElement('details');details.className='decision-details trip-search-details';details.innerHTML='<summary>修改行程或重新查价</summary>';search.before(details);details.append(search);}
  }
- if(hotels.length){const panel=document.createElement('section');panel.id='decision-results';panel.innerHTML=decisionSummaryHTML(hotels);if(summary)summary.after(panel);else main.prepend(panel);}
+ if(hotels.length||state.mode==='trip'){const panel=document.createElement('section');panel.id='decision-results';panel.innerHTML=(hotels.length?decisionSummaryHTML(hotels):'<div class="decision-zero"><h2>本次行程还没有已绑定候选</h2><p>填写当前日期和人数后开始查找；历史手工资料未自动当作本次候选或报价。</p></div>')+decisionArchiveHTML();if(summary)summary.after(panel);else main.prepend(panel);}
  const rule=main.querySelector('.rule-preview');
  const intro=[...main.querySelectorAll('.section-intro')].find(e=>e.querySelector('h2')?.textContent==='本次候选，一起比较');
  if(intro){const table=intro.nextElementSibling,notice=table?.nextElementSibling;const details=document.createElement('details');details.className='decision-details all-fields-record';details.innerHTML='<summary>全部字段与规则计算</summary>';intro.before(details);if(rule)details.append(rule);details.append(intro);if(table)details.append(table);if(notice?.classList.contains('disclaimer'))details.append(notice);}

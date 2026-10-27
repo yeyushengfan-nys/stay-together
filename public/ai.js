@@ -1,7 +1,7 @@
 'use strict';
 // API credentials exist only in the server environment, never in this file.
 let aiStatus=null, aiBusy=false, aiMessage='', extraction=null;
-function analysisHotels(){const scoped=typeof decisionScopedHotels==='function'?decisionScopedHotels():comparisonHotels(),rows=typeof HotelDecisionSummary!=='undefined'?HotelDecisionSummary.build(scoped,state.people,state.trip):[],excluded=new Set(rows.filter(r=>r.conflicts.length||r.code==='over_reference_budget').map(r=>r.hotel.id)),viable=scoped.filter(h=>!excluded.has(h.id)),matched=viable.filter(h=>h.packageMatch?.selectedOffer);return (matched.length?matched:viable.length?viable:scoped).slice(0,3).map(({packageMatch,previousQuoteBundle,collectionAttempts,...h})=>h);}
+function analysisHotels(){const scoped=typeof decisionScopedHotels==='function'?decisionScopedHotels():comparisonHotels(),rows=typeof HotelDecisionSummary!=='undefined'?HotelDecisionSummary.build(scoped,state.people,state.trip):[],excluded=new Set(rows.filter(r=>r.conflicts.length||r.code==='over_reference_budget').map(r=>r.hotel.id)),viable=scoped.filter(h=>!excluded.has(h.id)),matched=viable.filter(h=>h.packageMatch?.selectedOffer);return (matched.length?matched:viable.length?viable:scoped).slice(0,3).map(({packageMatch,previousQuoteBundle,previousManualPrice,collectionAttempts,...h})=>h);}
 function aiRequestDecisionScope(){return state.mode==='trip'?'reference_selection':'final';}
 const snapshot=()=>({analysis_version:15,decision_scope:aiRequestDecisionScope(),mode:state.mode,scenario:state.functionalTest?'functional_test':'personal_trip',preferencesConfirmed:state.preferencesConfirmed,trip:state.trip,people:state.people,hotels:analysisHotels()});
 const fingerprint=()=>JSON.stringify(snapshot());

@@ -1,7 +1,7 @@
 {
   "kind": "offline_mock_regression_not_real_users",
-  "count": 51,
-  "passed": 51,
+  "count": 52,
+  "passed": 52,
   "failed": 0,
   "tests": [
     {
@@ -86,6 +86,10 @@
     },
     {
       "file": "tests/test-core-selection-continuation.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-current-trip-scope.mjs",
       "exit_code": 0
     },
     {
@@ -211,11 +215,33 @@
   ],
   "real_network_blocked": true,
   "date": "2026-10-27",
-  "source_version": "Sites v61 / extension 0.2.8",
-  "source_commit": "b7892fc52ce00a3779e8f696c345e27dd0c2f48b",
+  "source_version": "Sites v62 / extension 0.2.8",
+  "source_commit": "5fada96dbbc7254c0845352702dba77412133ba0",
   "pending_deployment": false,
-  "verification_scope": "51 offline scripts on the public copy. No real-browser storage was read and no backup was created. These checks do not establish v61 refresh persistence, the ongoing post-recovery collection, or a complete hotel recommendation; final live results are recorded separately in PROJECT_STATUS.md.",
+  "verification_scope": "52 offline scripts on the filtered public copy; separate controlled browser UI checks confirmed exact-trip archiving and retained local preferences. No fresh price collection, paid AI call, deletion or cross-browser synchronization in this iteration. This is not an external user study.",
   "public_copy_framework_build_this_iteration": false,
   "public_copy_clean_dependency_install_verified": false,
-  "live_hotel_success_not_implied": true
+  "live_hotel_success_not_implied": true,
+  "live_smoke": {
+    "kind": "controlled_browser_ui_smoke_not_external_user_study",
+    "embedded_browser": {
+      "current_candidates": 0,
+      "archived_manual_records": 2,
+      "show_all_current_trip_candidates": 0,
+      "preference_controls_compared": 68,
+      "preferences_unchanged": true
+    },
+    "desktop_chrome": {
+      "current_records": 18,
+      "explicit_conflicts": 3,
+      "pending_verification": 15,
+      "confirmed_eligible": 0,
+      "preference_controls_compared": 68,
+      "preferences_unchanged": true
+    },
+    "fresh_price_collection_performed": false,
+    "paid_ai_calls": 0,
+    "data_deleted": false,
+    "cross_browser_synchronization": false
+  }
 }

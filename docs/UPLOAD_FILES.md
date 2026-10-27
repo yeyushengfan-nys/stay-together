@@ -1,8 +1,8 @@
 # 本次公开文件清单
 
-本轮源码对应已部署v61（b7892fc52ce00a3779e8f696c345e27dd0c2f48b），扩展0.2.8，包含查询历史保留和启动储存保护修复。公开副本51个离线脚本通过；这些合成检查不代表v61真实刷新持久化、恢复后补查或完整推荐已通过。最终现场恢复与验收结论以 `PROJECT_STATUS.md` 为准。只含下列文件，不含聊天、客服原文、私人证据或真实部署身份。
+本轮源码对应已部署v62（5fada96dbbc7254c0845352702dba77412133ba0），扩展0.2.8，包含当前行程范围与历史归档修复。公开副本52个离线脚本通过。另有受控浏览器检查：内置浏览器的2条旧手工资料默认归档，当前候选0，查看本行程全部仍为0；Chrome刷新保留当前18条记录（3项冲突、15项待核、已确认符合0）。两处各68个偏好控件前后保持一致。这是现场界面检查，不是外部用户试验；本轮未重新查价、未调用付费AI、未删除数据或跨浏览器同步。详细限定以 `PROJECT_STATUS.md` 为准。只含下列文件，不含聊天、客服原文、私人证明或真实部署身份。
 
-共255个文件，含本清单。
+共256个文件，含本清单。
 
 ```text
 .env.example
@@ -225,6 +225,7 @@ tests/test-collector.mjs
 tests/test-conflict-ownership-ui.mjs
 tests/test-continuation-worker.mjs
 tests/test-core-selection-continuation.mjs
+tests/test-current-trip-scope.mjs
 tests/test-decision-summary.mjs
 tests/test-decision-ui.mjs
 tests/test-evidence-preservation.mjs
