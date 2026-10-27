@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFile} from 'node:fs/promises';
+const ctx={renderCompare:()=>{},renderGuide:()=>{},render:()=>{},document:{addEventListener:()=>{}},state:{auditDossiers:{},activeAuditKey:'old'}};
+vm.createContext(ctx);vm.runInContext(await readFile(new URL('../public/audit.js',import.meta.url),'utf8'),ctx);
+const q={city:'深圳',checkin:'2026-12-24',checkout:'2026-12-28',rooms:1,adults:2},hotels=[{name:'当前深圳酒店',room:'大床房'}];
+const old={query:{city:'北京',checkin:'2026-11-13',checkout:'2026-11-16',hotel:'北京瑰丽酒店',rooms:1,adults:2}};
+ctx.state.auditDossiers.old=old;assert.equal(ctx.currentAuditDossier(q,hotels),null);
+const good={query:{...q,hotel:hotels[0].name,room:'大床房'}};ctx.state.auditDossiers.good=good;assert.equal(ctx.currentAuditDossier(q,hotels),good);
+for(const patch of [{city:'上海'},{checkin:'2026-12-25'},{checkout:'2026-12-29'},{adults:1},{rooms:2},{room:'双床房'},{hotel:'另一家深圳酒店'}])assert.equal(ctx.auditInScope({query:{...good.query,...patch}},q,hotels),false);
+assert.equal(ctx.state.auditDossiers.old,old);
+console.log('PASS audit results require current hotel, city, dates, occupancy and room; old Rosewood dossier retained but excluded.');

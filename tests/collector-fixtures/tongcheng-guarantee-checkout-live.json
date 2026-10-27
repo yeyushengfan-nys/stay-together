@@ -1,0 +1,30 @@
+{
+  "provenance": "Visible Tongcheng checkout DOM; sanitized to hotel, room, dates, billing and policy only. Not a full autonomous-run success.",
+  "observedAt": "2026-10-25T13:23:26.218Z",
+  "url": "https://www.ly.com/hotel/book?hotelid=40201934&checkindate=2026-10-25&checkoutdate=2026-10-27",
+  "header": "上海万信R酒店(陆家嘴金融街区店)\n特惠大床房\n1张1.8米大床\n10月25日 10月27日",
+  "labels": [
+    {
+      "parentText": "在线担保\n¥283\n离店后担保金将原路退还",
+      "text": "在线担保"
+    },
+    {
+      "parentText": "到店付款\n￥586",
+      "text": "到店付款"
+    },
+    {
+      "parentText": "房费\n2晚￥760",
+      "text": "房费"
+    },
+    {
+      "parentText": "共计优惠\n2晚优惠 -￥174",
+      "text": "共计优惠"
+    },
+    {
+      "parentText": "离店可享",
+      "text": "离店可享"
+    }
+  ],
+  "billing": "房费\n2晚￥760\n2026-10-25 无餐食\n1 x ¥370\n2026-10-26 无餐食\n1 x ¥390\n2026-10-27 无餐食\n共计优惠\n2晚优惠 -￥174\n今夜甩卖\n- ￥12\n白金专享\n- ￥115\n订房享好价\n- ￥39\n连住优惠\n- ￥8\n离店可享\n赠送积分\n2倍\n\n",
+  "cancellation": "取消政策\n 订单确认后30分钟内可免费取消\n北京时间\n取消费用\n\n订单确认30分钟内\n\n免费取消\n\n订单确认30分钟后\n\n不可取消\n\n逾期不可取消，如未能入住，将扣除全部金额。\n订单需等待酒店或供应商确认后生效，如订单取消时酒店未确认，将全额退款至您的付款账户中。\n"
+}

@@ -1,0 +1,72 @@
+{
+  "data": {
+    "itemList": [
+      {
+        "address": "上海市黄浦区南京西路88号",
+        "brandName": "锦江",
+        "commissionMoneyYuan": null,
+        "decorationTime": "2018",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F0RZcaZ",
+        "interestsPoi": "近南京路步行街",
+        "latitude": "31.23444046302233",
+        "longitude": "121.47309883601524",
+        "mainPic": "https://img.alicdn.com/imgextra/i4/O1CN01tPUpsc1oCcKH0KKw3_!!4611686018427384901-0-fliggy_content_upload_image.jpg",
+        "name": "上海新世界丽笙大酒店",
+        "price": "¥3304",
+        "rate": null,
+        "shId": "10051311",
+        "star": "五星级"
+      },
+      {
+        "address": "九江路505号 ，近福建中路。",
+        "brandName": null,
+        "commissionMoneyYuan": null,
+        "decorationTime": "2009",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F3Mmy25",
+        "interestsPoi": "近南京路步行街",
+        "latitude": "31.235216",
+        "longitude": "121.48134",
+        "mainPic": "https://img.alicdn.com/imgextra/i2/6000000006840/O1CN01YxTqD720OmEBFFX7R_!!6000000006840-2-hotel.png",
+        "name": "上海大酒店",
+        "price": "¥1806",
+        "rate": null,
+        "shId": "10050770",
+        "star": "五星级"
+      },
+      {
+        "address": "上海市黄浦区南京西路170号",
+        "brandName": "锦江",
+        "commissionMoneyYuan": null,
+        "decorationTime": "2009",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F37pdM9",
+        "interestsPoi": "近南京路步行街",
+        "latitude": "31.23357546246644",
+        "longitude": "121.47164974636641",
+        "mainPic": "https://img.alicdn.com/imgextra/i1/6000000001105/O1CN01oaq4jx1K28HTTziK4_!!6000000001105-0-hotel.jpg",
+        "name": "上海国际饭店",
+        "price": "¥2520",
+        "rate": null,
+        "shId": "10077061",
+        "star": "四星级"
+      },
+      {
+        "address": "汉口路740号,近云南中路",
+        "brandName": null,
+        "commissionMoneyYuan": null,
+        "decorationTime": "2023",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F1PwwsX",
+        "interestsPoi": "近南京路步行街",
+        "latitude": "31.233521",
+        "longitude": "121.476435",
+        "mainPic": "https://img.alicdn.com/imgextra/i2/6000000006842/O1CN01HBC7iS20Ph2RVS7oJ_!!6000000006842-0-hotel.jpg",
+        "name": "上海扬子饭店",
+        "price": "¥1076",
+        "rate": null,
+        "shId": "10049468",
+        "star": "豪华型"
+      }
+    ]
+  },
+  "status": 0,
+  "message": "success"
+}

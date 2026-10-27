@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),vm=require('node:vm');
+const context={window:{}};vm.createContext(context);vm.runInContext(fs.readFileSync('./public/price-compare.js','utf8'),context);
+const {amount,comparison}=context.window.HotelPriceCompare;
+const data=require('./public/price-snapshot.json');
+const grand=data.rates.find(r=>r.hotel==='上海大酒店');
+const yang=data.rates.find(r=>r.hotel==='上海扬子饭店');
+assert.equal(amount(grand),1359);assert.equal(grand.total,2718); // Guarantee is not a second room charge.
+assert.equal(amount(yang),1772.34);assert.notEqual(amount(yang),yang.listNightly);
+assert.equal(comparison(grand,yang).comparable,false);
+const base={...grand,taxConfirmed:true},second={...base,platform:'另一平台'};
+assert.equal(comparison(base,second).comparable,true);
+for(const change of [{room:'不同房型'},{breakfast:0},{cancellation:'不可取消'},{checkIn:'2026-10-26'},{taxConfirmed:false},{payment:'在线支付'}])assert.equal(comparison(base,{...second,...change}).comparable,false);
+assert.equal(comparison(base,base).comparable,false);
+assert.equal(comparison(base,{...second,cashback:50}).comparable,false);
+assert.equal(comparison(base,{...second,total:null}).comparable,false);
+const tcGrand=data.rates.find(r=>r.id==='tc-grand'),tcYang=data.rates.find(r=>r.id==='tc-yang'),tcPark=data.rates.find(r=>r.id==='tc-park');
+assert.equal(tcGrand.total,2718);assert.equal(tcGrand.displayedPayment,2668);assert.equal(tcGrand.cashback,50);assert.equal(amount(tcGrand),1359);
+assert.equal(tcYang.total,3508.68);assert.equal(amount(tcYang),1754.34);assert.equal(Math.round((yang.total-tcYang.total)*100),3600);
+assert.equal(tcPark.total,null);assert.equal(tcPark.breakfast,1);assert.equal(amount(tcPark),1289);
+assert.equal(data.unavailable[0].status,'channel_not_accepting_reservations');
+console.log('Price checks passed: totals, guarantee, rounded prices, matching terms, dates, platforms and tax.');

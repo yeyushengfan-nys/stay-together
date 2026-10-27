@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#226451">
+  <meta name="description" content="把同行人的要求、酒店资料和评价证据放在一起，找到适合大家的酒店。第一期互动演示。">
+  <title>住一起 · 酒店选择助手</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/collector-client.css">
+  <link rel="stylesheet" href="/decision-ui.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#compare"><span class="brand-icon">住</span><span>住一起<small>STAY TOGETHER</small></span></a><div class="mode-switch" role="group" aria-label="资料模式"><button type="button" data-mode="trip">我的行程</button><button type="button" data-mode="demo">演示模式</button></div><span class="top-note">把时间留给旅行，把选择放在一起。</span><button class="text-button" id="guide-top">使用指南 ↗</button></header><div id="mode-context" class="mode-context" role="status"></div>
+  <div class="app-shell">
+    <aside class="sidebar"><div class="eyebrow">OUR NEXT ESCAPE</div><h2 id="trip-title">杭州，慢一点。</h2><p class="muted">一起找到，大家都喜欢的那一间。</p>
+      <details class="trip-wrap" open><summary id="trip-summary">杭州 · 查看或修改行程</summary><form id="trip-form" class="trip-form"><label>目的地<input name="city" required maxlength="40"></label><div class="two-col"><label>入住<input type="date" name="checkin"></label><label>退房<input type="date" name="checkout"></label></div><label>这次想住在哪里<input name="area" maxlength="100" placeholder="如：西湖附近，地铁方便"></label><label class="check-label"><input type="checkbox" name="functionalTest">功能测试行程：日期和预算为测试设定</label><button class="secondary full" type="submit">保存行程</button></form></details>
+      <nav aria-label="页面导航"><a href="#compare" data-view="compare">▦ <span>酒店对比</span><span class="nav-count" id="nav-hotels">4</span></a><a href="#preferences" data-view="preferences">♧ <span>同行人的偏好</span></a><a href="#evidence" data-view="evidence">▤ <span>评价与依据</span></a><a href="#guide" data-view="guide">↗ <span>换成真实资料</span></a></nav>
+      <div class="sidebar-bottom"><span class="status-dot"></span> <span id="storage-status">资料保存在当前浏览器</span><p>分享网址不会同步私人资料。可导出文件带走。</p><div class="inline"><button class="text-button" id="export">导出备份</button><button class="text-button" id="import">导入备份</button></div><input type="file" id="import-file" accept="application/json,.json" hidden></div>
+    </aside>
+    <main id="main" tabindex="-1"></main>
+  </div>
+  <dialog id="dialog"><div class="dialog-head"><h2 id="dialog-title"></h2><button class="icon-button" id="dialog-close" aria-label="关闭弹窗">×</button></div><div id="dialog-body"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="claims.js"></script><script src="journey.js"></script><script src="criteria.js"></script><script src="quote-evidence.js"></script><script src="engine.js"></script><script src="app.js"></script><script src="ai-request.js"></script><script src="ai.js"></script><script src="research.js"></script><script src="discover.js"></script><script src="preferences.js"></script><script src="audit.js"></script><script src="collector-compare.js"></script><script src="selection-engine.js"></script><script src="reference-prices.js"></script><script src="collector-client.js"></script><script src="selection-client.js"></script>
+  <script src="package-match.js"></script><script src="decision-summary.js"></script><script src="decision-ui.js"></script>
+</body>
+</html>

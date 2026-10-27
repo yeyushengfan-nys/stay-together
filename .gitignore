@@ -1,0 +1,20 @@
+.env.local
+.env
+.env.*.local
+.dev.vars
+
+node_modules/
+dist/
+.vinext/
+.wrangler/
+.sites-runtime/
+.env*
+!.env.example
+*.tsbuildinfo
+
+# Private deployment identity and local build state
+.openai/hosting.json
+.next/
+# Original personal evidence is never part of the public snapshot
+public/verification-evidence/
+docs/full-price-*.json

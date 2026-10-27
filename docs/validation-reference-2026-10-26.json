@@ -1,0 +1,387 @@
+{
+  "testedOnClientDate": "2026-10-26",
+  "extensionVersion": "0.2.3",
+  "siteVersionDuringCollection": 29,
+  "sourceCommitDuringCollection": "80d1891062e0a63436324cf0a117d44e6c7c8c58",
+  "collectionMode": "room_page_reference",
+  "cases": [
+    {
+      "id": "BJ-1101",
+      "query": {
+        "city": "北京",
+        "area": "故宫",
+        "checkin": "2026-11-01",
+        "checkout": "2026-11-03",
+        "rooms": 1,
+        "adults": 2,
+        "platforms": [
+          "ctrip",
+          "tongcheng"
+        ],
+        "priceMode": "reference"
+      },
+      "status": "completed",
+      "plannedHotelPlatformPairs": 6,
+      "roomReferencePrices": 6,
+      "qualifiedRoomMealAlignedHotels": 0,
+      "durationMs": 324350,
+      "roomPlansRead": 32,
+      "peopleUnchanged": true,
+      "errors": [],
+      "referenceSnapshots": [
+        {
+          "hotel": "北京东四饭店(王府井故宫店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "大床房（55寸超大电视）",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住当天16:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 241,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:22:03.170Z",
+              "source": "https://hotels.ctrip.com/hotels/1732963.html?checkIn=2026-11-01&checkOut=2026-11-03&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "大床房（55寸超大电视）",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日16:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 249,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:23:41.955Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=20101426&inDate=2026-11-01&outDate=2026-11-03&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        },
+        {
+          "hotel": "王府井永光酒店",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "经济大床房",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住当天18:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 379,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:23:45.805Z",
+              "source": "https://hotels.ctrip.com/hotels/436894.html?checkIn=2026-11-01&checkOut=2026-11-03&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "经济双床房",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日18:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 361,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:25:27.304Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=91244394&inDate=2026-11-01&outDate=2026-11-03&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        },
+        {
+          "hotel": "速8精选酒店(北京天安门王府井步行街店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "副楼精选大床",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住当天12:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 309,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:25:32.050Z",
+              "source": "https://hotels.ctrip.com/hotels/1513114.html?checkIn=2026-11-01&checkOut=2026-11-03&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "副楼精选大床",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日12:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 312,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:27:12.804Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=20101479&inDate=2026-11-01&outDate=2026-11-03&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        }
+      ]
+    },
+    {
+      "id": "SH-1101",
+      "query": {
+        "city": "上海",
+        "area": "人民广场",
+        "checkin": "2026-11-01",
+        "checkout": "2026-11-03",
+        "rooms": 1,
+        "adults": 2,
+        "platforms": [
+          "ctrip",
+          "tongcheng"
+        ],
+        "priceMode": "reference"
+      },
+      "status": "completed",
+      "plannedHotelPlatformPairs": 6,
+      "roomReferencePrices": 6,
+      "qualifiedRoomMealAlignedHotels": 0,
+      "durationMs": 329132,
+      "roomPlansRead": 36,
+      "peopleUnchanged": true,
+      "errors": [],
+      "referenceSnapshots": [
+        {
+          "hotel": "汉庭酒店(上海人民广场大沽路店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "大床房（智能投屏）",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住当天18:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 368,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:28:11.037Z",
+              "source": "https://hotels.ctrip.com/hotels/5073118.html?checkIn=2026-11-01&checkOut=2026-11-03&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "大床房（智能投屏）",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日18:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 374,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:29:51.938Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=91449440&inDate=2026-11-01&outDate=2026-11-03&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        },
+        {
+          "hotel": "如家商旅酒店(上海外滩大世界地铁站店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "大床房",
+              "breakfast": "无早餐",
+              "cancellationHint": "10月31日 23:59前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 364,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:29:59.622Z",
+              "source": "https://hotels.ctrip.com/hotels/768112.html?checkIn=2026-11-01&checkOut=2026-11-03&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "大床房A",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日18:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 331,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:31:40.786Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=90288989&inDate=2026-11-01&outDate=2026-11-03&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        },
+        {
+          "hotel": "如家·neo(上海新天地陆家浜路地铁站店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "大床房A",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住当天18:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 304,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:31:45.331Z",
+              "source": "https://hotels.ctrip.com/hotels/429843.html?checkIn=2026-11-01&checkOut=2026-11-03&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "大床房A",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日18:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 276,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:33:24.889Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=00201090&inDate=2026-11-01&outDate=2026-11-03&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        }
+      ]
+    },
+    {
+      "id": "BJ-1107",
+      "query": {
+        "city": "北京",
+        "area": "故宫",
+        "checkin": "2026-11-07",
+        "checkout": "2026-11-09",
+        "rooms": 1,
+        "adults": 2,
+        "platforms": [
+          "ctrip",
+          "tongcheng"
+        ],
+        "priceMode": "reference"
+      },
+      "status": "completed",
+      "plannedHotelPlatformPairs": 6,
+      "roomReferencePrices": 6,
+      "qualifiedRoomMealAlignedHotels": 0,
+      "durationMs": 331013,
+      "roomPlansRead": 26,
+      "peopleUnchanged": true,
+      "errors": [],
+      "referenceSnapshots": [
+        {
+          "hotel": "秋果酒店·揽月(北京东四簋街店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "别枝惊鹊迷你房",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住当天18:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 389,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:34:48.931Z",
+              "source": "https://hotels.ctrip.com/hotels/76482399.html?checkIn=2026-11-07&checkOut=2026-11-09&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "别枝惊鹊迷你房",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日18:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 389,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:36:30.914Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=68079470&inDate=2026-11-07&outDate=2026-11-09&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        },
+        {
+          "hotel": "喆啡酒店(北京建国门首都儿研所店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "标准大床房（小度全屋智能）",
+              "breakfast": "无早餐",
+              "cancellationHint": "11月06日 12:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 361,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:36:38.320Z",
+              "source": "https://hotels.ctrip.com/hotels/71012799.html?checkIn=2026-11-07&checkOut=2026-11-09&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "标准大床房（小度全屋智能）",
+              "breakfast": "无早餐",
+              "cancellationHint": "不可取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 315,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:38:16.958Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=65192654&inDate=2026-11-07&outDate=2026-11-09&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        },
+        {
+          "hotel": "北京云景明谊酒店(王府井店)",
+          "referenceOffers": [
+            {
+              "provider": "ctrip",
+              "room": "单人普通间（公共卫浴）",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住当天12:00前可免费取消",
+              "paymentHint": "在线付",
+              "nightlyReference": 161,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:38:24.114Z",
+              "source": "https://hotels.ctrip.com/hotels/73664521.html?checkIn=2026-11-07&checkOut=2026-11-09&crn=1&adult=2&children=0"
+            },
+            {
+              "provider": "tongcheng",
+              "room": "阳光大床房(有窗）",
+              "breakfast": "无早餐",
+              "cancellationHint": "入住日12:00前可免费取消",
+              "paymentHint": "未注明",
+              "nightlyReference": 391,
+              "passedRoomFilters": false,
+              "capturedAt": "2026-10-25T16:40:05.749Z",
+              "source": "https://www.ly.com/hotel/hoteldetail?hotelId=67254851&inDate=2026-11-07&outDate=2026-11-09&adultsNumber=2"
+            }
+          ],
+          "qualifiedRoomMealAligned": false,
+          "referenceNightlyDifference": null,
+          "withinReferenceBudget": true
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "scenarios": 3,
+    "plannedHotelPlatformPairs": 18,
+    "roomReferencePrices": 18,
+    "qualifiedRoomMealAlignedHotelInstances": 0,
+    "allCompanionPreferencesPreserved": true,
+    "recordedCollectionErrors": 0
+  },
+  "fullCheckoutVerification": "not_run_by_design",
+  "aiDecisionVerification": "not_run_in_this_batch",
+  "agentInterventions": {
+    "resume": 0,
+    "skip": 0,
+    "manualPriceEdit": 0,
+    "orderSubmit": 0
+  },
+  "auditLimitation": "Agent actions are recorded from this work session; exported backups do not contain a complete event history of all possible human actions.",
+  "originalItineraryRestoration": {
+    "tripRestored": true,
+    "peopleUnchanged": true,
+    "refreshedReferenceCollectionStatus": "completed",
+    "excludedFromIndependentScenarioCount": true
+  },
+  "limitations": [
+    "These three scenarios do not establish a general accuracy or success rate.",
+    "References are not final payable stay totals.",
+    "Reference room/meal alignment is not full cancellation/payment/tax alignment.",
+    "There is no manual baseline for claiming time saved.",
+    "No external user trial was performed."
+  ]
+}

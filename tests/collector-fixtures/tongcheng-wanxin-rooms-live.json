@@ -1,0 +1,141 @@
+{
+  "capturedAt": "2026-10-25T13:04:03.869Z",
+  "query": {
+    "city": "上海",
+    "checkin": "2026-10-25",
+    "checkout": "2026-10-27",
+    "rooms": 1,
+    "adults": 2,
+    "children": 0,
+    "maxHotels": 3,
+    "budget": 4000,
+    "required": [
+      "smart",
+      "mold"
+    ],
+    "workflow": "selection"
+  },
+  "task": {
+    "provider": "tongcheng",
+    "phase": "rooms",
+    "hotelId": "40201934",
+    "name": "上海万信R酒店(陆家嘴金融街区店)",
+    "matchOffer": {
+      "room": "特惠大床房",
+      "breakfast": 0,
+      "cancellation": "订单确认后30分钟内免费取消",
+      "payment": "在线付"
+    }
+  },
+  "result": {
+    "observations": [],
+    "offers": [
+      {
+        "bed": "大床 |  22㎡ |  2成人1儿童",
+        "breakfast": 0,
+        "breakfastText": "无早餐",
+        "canPreview": true,
+        "cancellation": "订单确认30分钟内可免费取消",
+        "evidence": "上海万信R酒店(陆家嘴金融街区店)\n特惠大床房\n特惠大床房\n大床 |  22㎡ |  2成人1儿童\n2026-10-25至2026-10-27\n套餐：无餐食订单确认30分钟内可免费取消\n页面当前均价¥293\n无餐食订单确认30分钟内可免费取消\n到店付·需担保\n赠送积分\n立即确认\n可开专票\n\nlma1a8d3\n\n¥380¥293\n\n白金专享等4项  优惠¥87\n预订",
+        "hotel": "上海万信R酒店(陆家嘴金融街区店)",
+        "listNightly": 293,
+        "payment": "到店付·需担保",
+        "pending": [
+          "页面均价，尚未复核结算总额",
+          "优惠为本机已登录账号口径，其他账号可能不同"
+        ],
+        "room": "特惠大床房",
+        "rowKey": "1:0",
+        "stage": "room_list",
+        "taxConfirmed": false,
+        "total": null,
+        "totalBasisConfirmed": false
+      },
+      {
+        "bed": "大床 |  22㎡ |  2成人1儿童",
+        "breakfast": 0,
+        "breakfastText": "无早餐",
+        "canPreview": true,
+        "cancellation": "订单确认30分钟内可免费取消",
+        "evidence": "上海万信R酒店(陆家嘴金融街区店)\n特惠大床房\n特惠大床房\n大床 |  22㎡ |  2成人1儿童\n2026-10-25至2026-10-27\n套餐：无餐食订单确认30分钟内可免费取消\n页面当前均价¥302\n无餐食订单确认30分钟内可免费取消\n赠送积分\n立即确认\n可开专票\n\nlm257098\n\n¥307¥302\n\n特惠红包等1项  优惠¥5\n预订",
+        "hotel": "上海万信R酒店(陆家嘴金融街区店)",
+        "listNightly": 302,
+        "payment": "",
+        "pending": [
+          "页面均价，尚未复核结算总额",
+          "优惠为本机已登录账号口径，其他账号可能不同"
+        ],
+        "room": "特惠大床房",
+        "rowKey": "1:1",
+        "stage": "room_list",
+        "taxConfirmed": false,
+        "total": null,
+        "totalBasisConfirmed": false
+      },
+      {
+        "bed": "双床 |  30㎡ |  2成人2儿童",
+        "breakfast": 0,
+        "breakfastText": "无早餐",
+        "canPreview": true,
+        "cancellation": "订单确认30分钟内可免费取消",
+        "evidence": "上海万信R酒店(陆家嘴金融街区店)\n特惠双床房\n特惠双床房\n双床 |  30㎡ |  2成人2儿童\n2026-10-25至2026-10-27\n套餐：无餐食订单确认30分钟内可免费取消\n页面当前均价¥308\n无餐食订单确认30分钟内可免费取消\n赠送积分\n立即确认\n可开专票\n\nlm422992\n\n¥405¥308\n\n白金专享等5项  优惠¥97\n预订",
+        "hotel": "上海万信R酒店(陆家嘴金融街区店)",
+        "listNightly": 308,
+        "payment": "",
+        "pending": [
+          "页面均价，尚未复核结算总额",
+          "优惠为本机已登录账号口径，其他账号可能不同"
+        ],
+        "room": "特惠双床房",
+        "rowKey": "2:0",
+        "stage": "room_list",
+        "taxConfirmed": false,
+        "total": null,
+        "totalBasisConfirmed": false
+      },
+      {
+        "bed": "双床 |  30㎡ |  2成人2儿童",
+        "breakfast": 0,
+        "breakfastText": "无早餐",
+        "canPreview": true,
+        "cancellation": "订单确认30分钟内可免费取消",
+        "evidence": "上海万信R酒店(陆家嘴金融街区店)\n特惠双床房\n特惠双床房\n双床 |  30㎡ |  2成人2儿童\n2026-10-25至2026-10-27\n套餐：无餐食订单确认30分钟内可免费取消\n页面当前均价¥313\n无餐食订单确认30分钟内可免费取消\n到店付·需担保\n赠送积分\n立即确认\n可开专票\n\nlmd3695f\n\n¥405¥313\n\n白金专享等4项  优惠¥92\n预订",
+        "hotel": "上海万信R酒店(陆家嘴金融街区店)",
+        "listNightly": 313,
+        "payment": "到店付·需担保",
+        "pending": [
+          "页面均价，尚未复核结算总额",
+          "优惠为本机已登录账号口径，其他账号可能不同"
+        ],
+        "room": "特惠双床房",
+        "rowKey": "2:1",
+        "stage": "room_list",
+        "taxConfirmed": false,
+        "total": null,
+        "totalBasisConfirmed": false
+      }
+    ],
+    "previewCandidate": {
+      "bed": "大床 |  22㎡ |  2成人1儿童",
+      "breakfast": 0,
+      "breakfastText": "无早餐",
+      "canPreview": true,
+      "cancellation": "订单确认30分钟内可免费取消",
+      "evidence": "上海万信R酒店(陆家嘴金融街区店)\n特惠大床房\n特惠大床房\n大床 |  22㎡ |  2成人1儿童\n2026-10-25至2026-10-27\n套餐：无餐食订单确认30分钟内可免费取消\n页面当前均价¥302\n无餐食订单确认30分钟内可免费取消\n赠送积分\n立即确认\n可开专票\n\nlm257098\n\n¥307¥302\n\n特惠红包等1项  优惠¥5\n预订",
+      "hotel": "上海万信R酒店(陆家嘴金融街区店)",
+      "listNightly": 302,
+      "payment": "",
+      "pending": [
+        "页面均价，尚未复核结算总额",
+        "优惠为本机已登录账号口径，其他账号可能不同"
+      ],
+      "room": "特惠大床房",
+      "rowKey": "1:1",
+      "stage": "room_list",
+      "taxConfirmed": false,
+      "total": null,
+      "totalBasisConfirmed": false
+    },
+    "status": "ready"
+  }
+}

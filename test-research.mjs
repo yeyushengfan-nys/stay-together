@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {collectSearchSources,sanitizeResearch,normalizeURL,researchHotels} from './lib/hotel-research.mjs';
+import {AppError,mapAPIError} from './lib/hotel-ai.mjs';
+const output=[{type:'web_search_call',action:{sources:[{url:'https://thepuxuan.com/rooms',title:'璞瑄酒店 豪华套房'},{url:'javascript:alert(1)',title:'bad'}]}},{type:'message',content:[{type:'output_text',text:'模拟检索报告',annotations:[{type:'url_citation',url:'https://thepuxuan.com/rooms?utm_source=openai',title:'璞瑄酒店 豪华套房'}]}]}];
+const sources=collectSearchSources(output);assert.equal(sources.length,1);assert.equal(sources[0].cited,true);assert.equal(normalizeURL('javascript:alert(1)'),null);
+const result={hotels:[{query_index:0,name:'北京瑰丽酒店',items:[{topic:'洗衣设施',summary:'另一家资料',source_ids:['s1']}],pending:[],coverage:[{platform:'去哪儿',status:'public_result',source_ids:['s1']}]},{query_index:1,name:'北京璞瑄酒店',items:[{topic:'房型与动线',summary:'本店资料',source_ids:['s1']}],pending:[],coverage:[]}]};
+sanitizeResearch(result,sources,['北京瑰丽酒店','北京璞瑄酒店'],'北京');assert.equal(result.hotels[0].items.length,0);assert.equal(result.hotels[1].items.length,1);assert.equal(result.hotels[0].coverage[0].status,'no_result');assert.equal(result.hotels[1].coverage.length,9);assert.ok(result.hotels[0].pending.length>=3);
+await assert.rejects(()=>researchHotels({names:['A','B','C']},{},{AppError}),/1—2/);
+const env={OPENAI_API_KEY:'test-placeholder'};let called=false;
+await assert.rejects(()=>researchHotels({names:['测试酒店']},env,{AppError,mapAPIError,fetcher:async()=>new Response(JSON.stringify({status:'completed',output:[]})),requestModel:async()=>{called=true;}}),/未成功执行联网检索/);assert.equal(called,false);
+await assert.rejects(()=>researchHotels({names:['测试酒店']},env,{AppError,mapAPIError,fetcher:async()=>new Response(JSON.stringify({error:{type:'insufficient_quota'}}),{status:429})}),/余额/);
+await assert.rejects(()=>researchHotels({names:['测试酒店']},env,{AppError,mapAPIError,fetcher:async()=>new Response(JSON.stringify({status:'completed',output})),requestModel:async()=>({result:{hotels:[{query_index:0,name:'测试酒店',items:[{source_ids:['made-up']}],pending:[],coverage:[]}]}})}),/没有有效/);
+console.log('Research checks passed: actual search required, safe/deduplicated URLs, foreign-hotel source removal, platform host verification, missing coverage, unknown citations, quota mapping. Mock fixtures only.');

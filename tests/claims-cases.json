@@ -1,0 +1,338 @@
+[
+  {
+    "text": "房间没有智能马桶。洗衣房收费，不是免费自助洗衣。没有闻到霉味。2024年入住，酒店2018年开业。",
+    "expected": {
+      "smart": false,
+      "laundry": false,
+      "mold": false,
+      "opened": 2018
+    }
+  },
+  {
+    "text": "房间没有智能马桶。",
+    "expected": {
+      "smart": false
+    }
+  },
+  {
+    "text": "房间有智能马桶。",
+    "expected": {
+      "smart": true
+    }
+  },
+  {
+    "text": "配备智能马桶。",
+    "expected": {
+      "smart": true
+    }
+  },
+  {
+    "text": "不是智能马桶。",
+    "expected": {
+      "smart": false
+    }
+  },
+  {
+    "text": "智能化客房。",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "有没有智能马桶？",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "不是没有智能马桶。",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "没说有智能马桶。",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "房间有智能马桶。后来发现没有智能马桶。",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "套房有智能马桶，基础房没有。",
+    "room": "基础房",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "套房有智能马桶。",
+    "room": "基础房",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "套房有智能马桶。",
+    "room": "套房",
+    "expected": {
+      "smart": true
+    }
+  },
+  {
+    "text": "A酒店有智能马桶，B酒店没有。",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "有免费自助洗衣房。",
+    "expected": {
+      "laundry": true
+    }
+  },
+  {
+    "text": "自助洗衣免费。",
+    "expected": {
+      "laundry": true
+    }
+  },
+  {
+    "text": "免费代洗，但没有自助洗衣房。",
+    "expected": {
+      "laundry": false
+    }
+  },
+  {
+    "text": "酒店提供免费洗衣服务。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "有自助洗衣房。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "洗衣房收费，不是免费自助洗衣。",
+    "expected": {
+      "laundry": false
+    }
+  },
+  {
+    "text": "自助洗衣机收费。",
+    "expected": {
+      "laundry": false
+    }
+  },
+  {
+    "text": "洗衣服务享八五折。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "会员可以免费自助洗衣。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "套餐包含免费自助洗衣。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "有免费自助洗衣房，不过烘干收费。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "是否有免费自助洗衣？",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "没有自助洗衣机。",
+    "expected": {
+      "laundry": false
+    }
+  },
+  {
+    "text": "洗衣服务不免费。",
+    "expected": {
+      "laundry": false
+    }
+  },
+  {
+    "text": "免费代洗。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "没有闻到霉味。",
+    "expected": {
+      "mold": false
+    }
+  },
+  {
+    "text": "未发现明显霉味。",
+    "expected": {
+      "mold": false
+    }
+  },
+  {
+    "text": "有一股潮味。",
+    "expected": {
+      "mold": true
+    }
+  },
+  {
+    "text": "房间有霉味。",
+    "expected": {
+      "mold": true
+    }
+  },
+  {
+    "text": "不是没有霉味。",
+    "expected": {
+      "mold": null
+    }
+  },
+  {
+    "text": "没说有霉味。",
+    "expected": {
+      "mold": null
+    }
+  },
+  {
+    "text": "没查到霉味反馈。",
+    "expected": {
+      "mold": null
+    }
+  },
+  {
+    "text": "没有霉味，但是有潮味。",
+    "expected": {
+      "mold": null
+    }
+  },
+  {
+    "text": "房间干净舒适。",
+    "expected": {
+      "mold": null
+    }
+  },
+  {
+    "text": "2024年入住，酒店2018年开业。",
+    "expected": {
+      "opened": 2018
+    }
+  },
+  {
+    "text": "2024年装修，2018年开业。",
+    "expected": {
+      "opened": 2018
+    }
+  },
+  {
+    "text": "2018年开业，2023年翻新。",
+    "expected": {
+      "opened": 2018
+    }
+  },
+  {
+    "text": "2024年入住。",
+    "expected": {
+      "opened": null
+    }
+  },
+  {
+    "text": "据说2024年开业。",
+    "expected": {
+      "opened": null
+    }
+  },
+  {
+    "text": "2018年开业。2020年开业。",
+    "expected": {
+      "opened": null
+    }
+  },
+  {
+    "text": "北京瑰丽酒店有智能马桶，北京璞瑄酒店没有。",
+    "hotelName": "北京瑰丽酒店",
+    "hotelNames": [
+      "北京瑰丽酒店",
+      "北京璞瑄酒店"
+    ],
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "洗衣房是否收费？",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "有免费自助洗衣房。另一个来源说洗衣房收费。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "行政房有免费自助洗衣，基础房没有。",
+    "room": "行政房",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "自助洗衣不收费。",
+    "expected": {
+      "laundry": true
+    }
+  },
+  {
+    "text": "自助洗衣无需付费。",
+    "expected": {
+      "laundry": true
+    }
+  },
+  {
+    "text": "洗衣房不收费。",
+    "expected": {
+      "laundry": null
+    }
+  },
+  {
+    "text": "并非2018年开业。",
+    "expected": {
+      "opened": null
+    }
+  },
+  {
+    "text": "不是不提供智能马桶。",
+    "expected": {
+      "smart": null
+    }
+  },
+  {
+    "text": "没有不提供免费自助洗衣。",
+    "expected": {
+      "laundry": null
+    }
+  }
+]

@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFile} from 'node:fs/promises';
+import {validateQuery,makeJob,applySnapshot} from '../collector-extension/core.js';
+const now=Date.parse('2026-10-25T09:00:00Z');
+const q=validateQuery({city:'上海',checkin:'2026-10-25',checkout:'2026-10-27',rooms:1,adults:2,platforms:['ctrip','tongcheng'],maxHotels:3,workflow:'selection',priceMode:'checkout',budget:500,required:['smart','nonSmoking']},now);
+const job=makeJob(q,10,now);
+assert.equal(job.tasks.length,1);
+applySnapshot(job,{status:'ready',candidates:[{id:'11',name:'甲酒店'},{id:'22',name:'乙酒店'},{id:'33',name:'丙酒店'}]},now);
+assert.deepEqual(job.tasks.slice(1).map(t=>[t.provider,t.phase,t.name]),[['ctrip','rooms','甲酒店'],['tongcheng','locate','甲酒店'],['ctrip','rooms','乙酒店'],['tongcheng','locate','乙酒店'],['ctrip','rooms','丙酒店'],['tongcheng','locate','丙酒店']]);
+assert.equal(new URL(job.tasks[2].url).searchParams.get('keywords'),'甲酒店');
+const selected={room:'大床房',rowKey:'0:0',listNightly:200,breakfast:0,breakfastText:'无早餐',evidence:'无早餐',canPreview:true};
+job.taskTabId=91;applySnapshot(job,{status:'ready',offers:[selected],previewCandidate:selected,observations:[{key:'opened',value:2024,evidence:'开业：2024'},{key:'__proto__',value:true,evidence:'恶意字段'}]},now);
+assert.equal(job.tasks[job.index].phase,'amenities');
+assert.equal(job.tasks[job.index+1].phase,'checkout');
+assert.equal(job.observations.length,1);
+applySnapshot(job,{status:'ready',observations:[{key:'smart',value:true,room:'大床房',evidence:'智能马桶'}],offers:[]},now);
+assert.equal(job.errors.length,0);
+assert.equal(job.tasks[job.index].phase,'checkout');
+console.log('PASS 多酒店任务按酒店交替查询平台；动态定向检索；设施采集不串房型');
+const ctx={window:{}};vm.createContext(ctx);
+for(const file of ['criteria.js','collector-compare.js','selection-engine.js'])vm.runInContext(await readFile(new URL('../public/'+file,import.meta.url),'utf8'),ctx);
+const S=ctx.window.StaySelection;
+// Unit data only: intentionally invented names and amounts, never used as live quotes.
+function offer(hotel,provider,total,extra={}){return {hotel,provider,platform:provider==='ctrip'?'携程':'同程',room:'大床房',bed:'1张1.5米大床',checkIn:q.checkin,checkOut:q.checkout,rooms:1,adults:2,children:0,currency:'CNY',breakfast:0,breakfastText:'无早餐',breakfastConfirmed:true,payment:'在线付',cancellation:`订单确认后30分钟内免费取消，之后不可取消，未入住将收取您¥${total}。如未确认，全额退款。`,total,nightly:total/2,totalBasisConfirmed:true,stage:'checkout_preview',capturedAt:new Date(now).toISOString(),source:'https://hotels.ctrip.com/hotels/11.html',...extra};}
+const sample={query:q,candidates:[{name:'甲酒店'},{name:'乙酒店'},{name:'丙酒店'}],offers:[offer('甲酒店','ctrip',400),offer('甲酒店','tongcheng',380),offer('乙酒店','ctrip',1100),offer('乙酒店','tongcheng',1080),offer('丙酒店','ctrip',300),offer('丙酒店','tongcheng',280)],observations:[{hotel:'甲酒店',room:'大床房',key:'smart',value:true,evidence:'智能马桶',source:'https://hotels.ctrip.com/hotels/11.html'},{hotel:'丙酒店',room:'套房',key:'smart',value:true,evidence:'智能马桶',source:'https://hotels.ctrip.com/hotels/33.html'}]};
+const people=[{name:'我',budget:500,budgetHard:true,requireSmart:true,conditions:[]},{name:'朋友',budget:600,budgetHard:true,conditions:[]}];
+const saved=JSON.stringify(people),result=S.build(sample,people);
+assert.equal(result.rows.length,3);assert.equal(result.matched,3);assert.equal(result.eligible.length,1);assert.equal(result.top[0].name,'甲酒店');
+assert.equal(result.rows.find(r=>r.name==='乙酒店').status,'blocked');assert.equal(result.rows.find(r=>r.name==='丙酒店').status,'pending');assert.equal(JSON.stringify(people),saved);
+assert.equal(S.build(sample,people.map(p=>({...p,avoidMold:true}))).eligible.length,0);
+assert.equal(S.build(sample,people.map(p=>({...p,conditions:[{id:'breakfast',mode:'must'}]}))).eligible.length,0);
+sample.observations.push({hotel:'甲酒店',room:'大床房',key:'smart',value:false,evidence:'没有智能马桶',source:'https://www.ly.com/hotel/hoteldetail?hotelId=22'});
+assert.equal(S.build(sample,people).eligible.length,0);
+console.log('PASS 分别识别满足、超预算、信息不足；套房设施不推到普通房；冲突不强行推荐；偏好不被改写');
+const wrong=offer('甲酒店','tongcheng',380,{room:'另一房型'});
+assert.equal(ctx.window.StayCollectorCompare.compare(offer('甲酒店','ctrip',400),wrong).comparable,false);
+console.log('PASS 两平台金额都存在但套餐不一致时禁止标最低价');

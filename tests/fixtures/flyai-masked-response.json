@@ -1,0 +1,73 @@
+{
+  "data": {
+    "itemList": [
+      {
+        "address": "上海杨浦区国定东路273弄1号楼201号",
+        "brandName": null,
+        "commissionMoneyYuan": null,
+        "decorationTime": "2023-10-31",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F2W40yd",
+        "interestsPoi": "近五角场",
+        "latitude": "31.298173",
+        "longitude": "121.521037",
+        "mainPic": "https://img.alicdn.com/imgextra/i1/6000000001976/O1CN019OmVS21QT3jDff8xt_!!6000000001976-2-hotel.png",
+        "name": "云居逸公寓(上海五角场店)",
+        "price": "¥3x",
+        "rate": null,
+        "shId": "78236042",
+        "star": "经济型"
+      },
+      {
+        "address": "成山路1025号物流大院内",
+        "brandName": null,
+        "commissionMoneyYuan": null,
+        "decorationTime": "2021",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F2n5EsD",
+        "interestsPoi": "近东明路(地铁站)",
+        "latitude": "31.174281",
+        "longitude": "121.517446",
+        "mainPic": "https://img.alicdn.com/imgextra/i2/6000000000065/O1CN01Rzhqyc1CLoWduhEKy_!!6000000000065-0-fliggyimage.jpg",
+        "name": "上海美佳青年公寓",
+        "price": "¥4x",
+        "rate": null,
+        "shId": "72107633",
+        "star": "经济型"
+      },
+      {
+        "address": "天目中路520号中心铂庭26楼2612室",
+        "brandName": null,
+        "commissionMoneyYuan": null,
+        "decorationTime": "2022-12-01",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F2kHR0Y",
+        "interestsPoi": "近南京路步行街",
+        "latitude": "31.244058314631523",
+        "longitude": "121.4651881200798",
+        "mainPic": "https://img.alicdn.com/imgextra/i4/6000000008094/O1CN01X7l1kO29f6qss66DP_!!6000000008094-2-hotel.png",
+        "name": "豫住民宿(中心铂庭店)",
+        "price": "¥4x",
+        "rate": null,
+        "shId": "75477440",
+        "star": "经济型"
+      },
+      {
+        "address": "共和新路3703号（共和国际商务广场C栋501室）",
+        "brandName": "菲住",
+        "commissionMoneyYuan": null,
+        "decorationTime": "2017",
+        "detailUrl": "https://router.feizhu.com/multi/webview?url=https%3A%2F%2Frouter.feizhu.com%2Fws%2F4VfqfR",
+        "interestsPoi": "近静安体育中心-体育馆",
+        "latitude": "31.304523",
+        "longitude": "121.4497",
+        "mainPic": "https://img.alicdn.com/imgextra/i3/O1CN015Zum2C1fei4utk01W_!!4611686018427383744-0-fliggy_content_upload_image.jpg",
+        "name": "上海希翱酒店(彭浦新村地铁站)",
+        "price": "¥4x",
+        "rate": null,
+        "shId": "54661016",
+        "star": "经济型"
+      }
+    ]
+  },
+  "message": "success",
+  "status": 0,
+  "systemMessage": "*当前为体验模式，部分搜索结果可能受限，请前往 [飞猪AI开放平台](https://flyai.open.fliggy.com/) 获取正式API Key解锁完整服务。*"
+}

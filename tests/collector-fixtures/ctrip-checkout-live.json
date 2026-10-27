@@ -1,0 +1,42 @@
+{
+  "capturedAt": "2026-10-25T10:19:30.285Z",
+  "query": {
+    "city": "上海",
+    "checkin": "2026-10-25",
+    "checkout": "2026-10-27",
+    "rooms": 1,
+    "adults": 2,
+    "children": 0,
+    "maxHotels": 2
+  },
+  "result": {
+    "offers": [
+      {
+        "address": "上海浦东新区浦东金桥浦东大道2123号",
+        "bed": "1张1.51米大床",
+        "breakfast": 0,
+        "breakfastText": "无早餐",
+        "canPreview": true,
+        "cancellation": "订单确认后30分钟内免费取消",
+        "cashback": null,
+        "displayedPayment": null,
+        "evidence": "艺龙安悦酒店(上海浦东大道歇浦路地铁站店)\n悦眠大床房「舒睡床品+智能控温吹风机+乳胶记忆枕」\n1张1.51米大床\n2026-10-25至2026-10-27\n1间×2晚 房费¥388\n早餐：无早餐\n订单确认后30分钟内免费取消",
+        "guarantee": null,
+        "hotel": "艺龙安悦酒店(上海浦东大道歇浦路地铁站店)",
+        "listNightly": 194,
+        "payment": "在线付",
+        "pending": [
+          "税费口径未独立核实",
+          "付款及优惠资格以平台为准"
+        ],
+        "room": "悦眠大床房「舒睡床品+智能控温吹风机+乳胶记忆枕」",
+        "rowKey": "0:0",
+        "stage": "checkout_preview",
+        "taxConfirmed": false,
+        "total": 388,
+        "totalBasisConfirmed": true
+      }
+    ],
+    "status": "ready"
+  }
+}

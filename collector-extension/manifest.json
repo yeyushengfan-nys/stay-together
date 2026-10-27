@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "住一起 · 本机酒店采集助手",
+  "version": "0.2.7",
+  "description": "按你在住一起填写的行程读取携程、同程的可见房型报价；登录或验证码暂停，不提交订单。",
+  "permissions": ["storage", "scripting", "alarms"],
+  "host_permissions": ["https://hotels.ctrip.com/*", "https://passport.ctrip.com/*", "https://www.ly.com/*", "https://passport.ly.com/*"],
+  "background": {"service_worker": "background.js", "type": "module"},
+  "action": {"default_popup": "popup.html", "default_title": "住一起采集状态"},
+  "content_scripts": [
+    {"matches": ["https://stay-together-yusi-1024.yusinn0613.chatgpt.site/*"], "js": ["bridge.js"], "run_at": "document_idle"},
+    {"matches": ["https://hotels.ctrip.com/*", "https://www.ly.com/*"], "js": ["watcher.js"], "run_at": "document_start"}
+  ],
+  "content_security_policy": {"extension_pages": "script-src 'self'; object-src 'none'"}
+}

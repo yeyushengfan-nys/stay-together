@@ -1,0 +1,68 @@
+{
+  "status": "completed_reference_collection_only",
+  "version": "0.2.3",
+  "mode": "room_page_reference",
+  "preserve_existing_companion_preferences": true,
+  "restore_original_itinerary_after_tests": true,
+  "cases": [
+    {
+      "id": "BJ-1101",
+      "city": "北京",
+      "area": "故宫",
+      "checkin": "2026-11-01",
+      "checkout": "2026-11-03",
+      "purpose": "复测原日期人数误判",
+      "status": "completed"
+    },
+    {
+      "id": "SH-1101",
+      "city": "上海",
+      "area": "人民广场",
+      "checkin": "2026-11-01",
+      "checkout": "2026-11-03",
+      "purpose": "同日期换城市",
+      "status": "completed"
+    },
+    {
+      "id": "BJ-1107",
+      "city": "北京",
+      "area": "故宫",
+      "checkin": "2026-11-07",
+      "checkout": "2026-11-09",
+      "purpose": "同城市换日期",
+      "status": "completed"
+    }
+  ],
+  "limits": {
+    "max_hotels_per_case": 3,
+    "platforms": [
+      "ctrip",
+      "tongcheng"
+    ],
+    "rooms": 1,
+    "adults": 2
+  },
+  "metrics": [
+    "planned_hotel_platform_pairs",
+    "room_reference_prices_obtained",
+    "complete_quotes_obtained",
+    "reference_room_meal_pairs_aligned",
+    "fully_comparable_hotels",
+    "necessary_conditions_satisfied",
+    "elapsed_ms",
+    "login_pauses",
+    "verification_pauses",
+    "persistent_query_mismatches",
+    "load_timeouts",
+    "no_offer_results",
+    "manual_interventions"
+  ],
+  "metric_rules": [
+    "参考价与完整报价分开",
+    "参考房型餐食对应与完整同条件核验分开",
+    "未知设施不算满足",
+    "未执行的测试保持pending",
+    "不提交订单、不付款"
+  ],
+  "restore_status": "completed_with_fresh_original_itinerary_reference_prices"
+}

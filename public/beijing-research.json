@@ -1,0 +1,361 @@
+{
+  "result": {
+    "hotels": [
+      {
+        "query_index": 0,
+        "name": "北京瑰丽酒店",
+        "area": "北京朝阳区呼家楼/CBD一带",
+        "items": [
+          {
+            "topic": "开业与翻新",
+            "summary": "公开资料可确认酒店于2014年开业；本轮未查到可稳定引用的明确翻新年份。",
+            "source_ids": [
+              "s4",
+              "s71"
+            ],
+            "room_scope": "全店",
+            "date_note": "2014年开业；翻新未注明"
+          },
+          {
+            "topic": "房型与动线",
+            "summary": "公开页可见酒店有多种房型，但未查到足够细的楼层、动线或客房布局说明。",
+            "source_ids": [
+              "s72",
+              "s74"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "智能马桶",
+            "summary": "公开页面未见可直接确认智能马桶配置的证据。",
+            "source_ids": [
+              "s73"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "洗衣设施",
+            "summary": "携程页面可见“免费洗衣服务”字样，但未见能直接等同于“免费自助洗衣房/自助洗衣机”的明确说明，不能混同。",
+            "source_ids": [
+              "s74"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "卫生与异味",
+            "summary": "本轮检索未找到可直接引用的、针对卫生或异味的明确住客原文样本。",
+            "source_ids": [
+              "s72"
+            ],
+            "room_scope": "全店",
+            "date_note": "本轮检索"
+          },
+          {
+            "topic": "位置交通",
+            "summary": "公开资料显示酒店位于朝阳区呼家楼/CBD一带，靠近CCTV与国贸区域，并有到机场及主要火车站的车程/里程信息。",
+            "source_ids": [
+              "s71",
+              "s75"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "其他",
+            "summary": "样本评论中可见对布局舒适、服务投入和设计感的正向表述，但仅代表个别样本，不宜概括为整体。",
+            "source_ids": [
+              "s74"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          }
+        ],
+        "pending": [
+          "需进一步核实：北京瑰丽酒店是否存在近年局部翻新；哪些房型是否配备智能马桶；“免费洗衣服务”是否实际对应自助洗衣机/洗衣房，还是仅为代洗服务。",
+          "请确认具体预订房型及该房型的智能马桶配置。",
+          "请确认是否有免费自助洗衣，而非付费洗衣或套餐礼遇。",
+          "请补充入住日期、实时含税价格与早餐、取消条件。"
+        ],
+        "coverage": [
+          {
+            "platform": "酒店官网",
+            "status": "public_result",
+            "note": "有公开可读内容，可用于酒店基础信息与位置描述。",
+            "source_ids": [
+              "s71",
+              "s73"
+            ]
+          },
+          {
+            "platform": "携程/Trip.com",
+            "status": "public_result",
+            "note": "有公开可读内容，可用于房型、服务与评论样本。",
+            "source_ids": [
+              "s72",
+              "s74"
+            ]
+          },
+          {
+            "platform": "去哪儿",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "飞猪",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "同程",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "小红书",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "大众点评",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "抖音",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "豆瓣",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          }
+        ],
+        "query": "北京瑰丽酒店"
+      },
+      {
+        "query_index": 1,
+        "name": "北京璞瑄酒店",
+        "area": "北京东城区王府井/中国美术馆一带",
+        "items": [
+          {
+            "topic": "开业与翻新",
+            "summary": "公开资料一致指向酒店于2019年开业；本轮未查到明确翻新年份。",
+            "source_ids": [
+              "s76",
+              "s79"
+            ],
+            "room_scope": "全店",
+            "date_note": "2019年开业；翻新未注明"
+          },
+          {
+            "topic": "房型与动线",
+            "summary": "公开页可见酒店约116间客房，部分客房可望故宫，但未查到可稳定引用的动线或走廊布局说明。",
+            "source_ids": [
+              "s76",
+              "s77"
+            ],
+            "room_scope": "部分客房",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "智能马桶",
+            "summary": "本轮未查到可直接确认智能马桶配置的公开证据。",
+            "source_ids": [
+              "s76"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "洗衣设施",
+            "summary": "未查到可直接确认免费自助洗衣房或自助洗衣机的公开信息。",
+            "source_ids": [
+              "s76"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "卫生与异味",
+            "summary": "样本中既有对清洁、舒适度的正面表述，也有一条提到厕所封闭后有明显异味感受的样本；不同房型和不同入住体验不能混用。",
+            "source_ids": [
+              "s76",
+              "s79"
+            ],
+            "room_scope": "部分房型/个别样本",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "位置交通",
+            "summary": "酒店位于王府井大街1号，中国美术馆地铁站附近，步行或短途可达故宫、王府井与美术馆一带。",
+            "source_ids": [
+              "s77"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          },
+          {
+            "topic": "其他",
+            "summary": "样本中常见对地理位置、景观、设计感和服务细致度的正向评价，但仍属于样本信息，不宜外推为全部住客体验。",
+            "source_ids": [
+              "s76",
+              "s79"
+            ],
+            "room_scope": "全店",
+            "date_note": "未注明"
+          }
+        ],
+        "pending": [
+          "需进一步核实：北京璞瑄酒店是否有局部翻新；哪些房型配备智能马桶；是否存在免费自助洗衣设施，以及厕所异味是否仅出现在个别房型或个别时段。",
+          "请确认具体预订房型及该房型的智能马桶配置。",
+          "请确认是否有免费自助洗衣，而非付费洗衣或套餐礼遇。",
+          "请补充入住日期、实时含税价格与早餐、取消条件。"
+        ],
+        "coverage": [
+          {
+            "platform": "酒店官网",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "携程/Trip.com",
+            "status": "public_result",
+            "note": "有公开可读内容，可用于房型、位置与评论样本。",
+            "source_ids": [
+              "s76"
+            ]
+          },
+          {
+            "platform": "去哪儿",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "飞猪",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "同程",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "小红书",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "大众点评",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "抖音",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          },
+          {
+            "platform": "豆瓣",
+            "status": "no_result",
+            "note": "本次未取得能明确对应这家酒店的可用来源。",
+            "source_ids": []
+          }
+        ],
+        "query": "北京璞瑄酒店"
+      }
+    ],
+    "limitations": [
+      "本次仅整理报告中可公开核对的内容，不补充未在来源中明确出现的信息。",
+      "未将官网宣传内容当作住客评价。",
+      "未把单个评论样本概括为普遍事实，卫生/异味等信息均保留样本范围。",
+      "未制造免费洗衣、智能马桶、翻新年份或无异味等无法直接证实的断言。",
+      "覆盖状态中 public_result 仅表示有可用公开内容摘要，link_only 仅用于标题或入口可见、正文不可读的情况；本次未使用 link_only。",
+      "若缺少可关联 source_ids，则应移入 pending；本次 items 均已绑定来源，pending 仅列待确认问题。"
+    ]
+  },
+  "sources": [
+    {
+      "id": "s4",
+      "url": "https://www.rosewoodhotels.com/sc/beijing/media/press-kit/hotel-fact-sheet.html",
+      "title": "www.rosewoodhotels.com",
+      "cited": false
+    },
+    {
+      "id": "s71",
+      "url": "https://www.rosewoodhotels.com/sc/beijing/media/press-kit/hotel-fact-sheet.html?utm_source=openai",
+      "title": "酒店简介",
+      "cited": true
+    },
+    {
+      "id": "s72",
+      "url": "https://m.ctrip.com/html5/hotel/hoteldetail/1198297.html?utm_source=openai",
+      "title": "携程酒店-北京瑰丽酒店预订-北京瑰丽酒店价格、点评、电话、地址查询-〖携程旅行手机版〗",
+      "cited": true
+    },
+    {
+      "id": "s73",
+      "url": "https://www.rosewoodhotels.com/zh-CN/beijing?utm_source=openai",
+      "title": "北京奢华酒店 | 北京瑰丽酒店",
+      "cited": true
+    },
+    {
+      "id": "s74",
+      "url": "https://hotels.ctrip.com/hotels/1198297.html?utm_source=openai",
+      "title": "北京瑰丽酒店预订价格,联系电话位置地址〖携程酒店〗",
+      "cited": true
+    },
+    {
+      "id": "s75",
+      "url": "https://you.ctrip.com/food/beijing1/24919324.html?utm_source=openai",
+      "title": "you.ctrip.com",
+      "cited": true
+    },
+    {
+      "id": "s76",
+      "url": "https://hotels.ctrip.com/hotels/28704027.html?utm_source=openai",
+      "title": "北京璞瑄酒店预订价格,联系电话位置地址〖携程酒店〗",
+      "cited": true
+    },
+    {
+      "id": "s77",
+      "url": "https://ditu.amap.com/place/B0FFILFAOS?utm_source=openai",
+      "title": "北京璞瑄酒店 - 北京市东城区 - 住宿服务;宾馆酒店;宾馆酒店 | 地址营业时间 | 高德地图",
+      "cited": true
+    },
+    {
+      "id": "s79",
+      "url": "https://cn.tripadvisor.com/Hotel_Review-g294212-d15615000-Reviews-or20-The_PuXuan_Hotel_and_Spa-Beijing.html?utm_source=openai",
+      "title": "璞瑄酒店 (北京市) - The PuXuan Hotel and Spa - 699条旅客点评与比价",
+      "cited": true
+    }
+  ],
+  "names": [
+    "北京瑰丽酒店",
+    "北京璞瑄酒店"
+  ],
+  "city": "北京",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "mode": "real_model",
+  "retrieved_at": "2026-10-24T12:08:44.782Z",
+  "search_call_count": 4,
+  "source_note": "以下为 AI 整理的公开检索摘要，并非原始住客引文；搜索来源可能只有索引摘要。点击来源核对原文与日期。"
+}
