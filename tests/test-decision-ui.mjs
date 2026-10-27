@@ -104,4 +104,23 @@ ctx.hotels=[noMeals];assert(!ctx.resultHTML().includes('verification-card'));
 ctx.hotels=[verifyHotel];ctx.state.aiResult.fingerprint='older';assert(!ctx.resultHTML().includes('verification-card'));assert(ctx.resultHTML().includes('资料已更新'));
 ctx.state.aiResult.fingerprint='current';ctx.state.aiResult.data.result.verification_shortlist[0].reasons[0].explanation='<script>alert(1)</script>';html=ctx.resultHTML();assert(!html.includes('<script>'));assert(html.includes('&lt;script&gt;'));
 delete ctx.state.aiResult.data.result.verification_shortlist;assert(!ctx.resultHTML().includes('verification-card'));
+// Explicit facility failures are terminal program results, not another AI job.
+// Their matching package prices cannot make them occupy the primary shortlist.
+ctx.state.mode='trip';ctx.aiRequestDecisionScope=()=> 'reference_selection';ctx.collectorActive=['collecting'];ctx.collectorPaused=['needs_login','needs_verification','needs_review'];
+ctx.state.people=[{...person,conditions:[...person.conditions,{id:'smartWash',mode:'must'}]}];
+const checked=(id,wash)=>({...hotel([offer('checked-'+id,'ctrip','双床房',300,'2份早餐')],'合成核验酒店'+id),facts:{smart:true,smartWash:wash,mold:false,quiet:true}});
+ctx.hotels=[checked('a',false),checked('b',false),checked('c',false)];
+ctx.collectorJob={query:trip,status:'completed',search:{poolSize:12,inspected:12,roundInspected:4,remainingPool:0,stopReason:'pool_exhausted'}};
+html=ctx.decisionSummaryHTML(ctx.decisionScopedHotels());recordAt=html.indexOf('<details class="decision-details decision-checked-record">');
+assert(html.includes('已查 3 家 · 已排除 3 家 · 必要证据待核实 0 家 · 已确认符合当前范围 0 家'));
+assert(html.includes('本次已查范围暂没有已确认符合的候选'));assert(html.includes('本次加载的候选池已检查完毕'));assert(html.includes('未遍历全城酒店'));
+assert(!html.slice(0,recordAt).includes('data-decision-hotel='));assert(!html.includes('data-collector="CONTINUE_SELECTION"'));assert(!html.includes('成都没有酒店'));
+const pass=checked('pass',true),needsCheck=checked('unknown',null);ctx.hotels=[checked('excluded',false),pass,needsCheck];
+html=ctx.decisionSummaryHTML(ctx.decisionScopedHotels());recordAt=html.indexOf('<details class="decision-details decision-checked-record">');
+assert(html.includes('本次只有1家已确认符合当前选择范围'));assert(html.includes('不凑备选'));assert(html.includes('已排除 1 家'));assert(html.includes('必要证据待核实 1 家'));
+assert.equal((html.slice(0,recordAt).match(/data-decision-hotel=/g)||[]).length,1);assert(html.slice(0,recordAt).includes(pass.name));assert(!html.slice(0,recordAt).includes(needsCheck.name));
+ctx.hotels=[checked('excluded',false),needsCheck];ctx.collectorJob={query:trip,status:'completed',continuationReady:true,search:{poolSize:12,inspected:8,roundInspected:8,remainingPool:4,stopReason:'inspection_limit'}};
+html=ctx.decisionSummaryHTML(ctx.decisionScopedHotels());assert(html.includes('池内还有4家'));assert(html.includes('data-collector="CONTINUE_SELECTION"'));assert(!html.includes('候选池已检查完毕'));
+ctx.collectorJob.status='needs_login';html=ctx.decisionSummaryHTML(ctx.decisionScopedHotels());assert(html.includes('查找已暂停'));assert(!html.includes('候选池已检查完毕'));assert(!html.includes('data-collector="CONTINUE_SELECTION"'));
+ctx.collectorJob.status='failed';html=ctx.decisionSummaryHTML(ctx.decisionScopedHotels());assert(html.includes('本轮采集未完成'));assert(html.includes('不能据此判断没有合适酒店'));
 console.log('PASS current-preference package matching across all captured plans; adult breakfast counts, budgets, beds and cancellation windows; same-package display; secondary nonmatching prices; visible evidence gaps; unchanged saved data (synthetic fixtures).');

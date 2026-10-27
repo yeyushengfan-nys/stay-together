@@ -1,11 +1,13 @@
-# 住一起 · 本机酒店采集助手 0.2.7
+# 住一起 · 本机酒店采集助手 0.2.8
 
 Load unpacked in Chrome; open the exact production site in that Chrome profile and reload.
 Never load arbitrary credentials. The website bridge accepts only a bounded city/date/occupancy
-query and commands. Companion preferences never go to the extension. No cookies/debugger/
+query and commands. Full companion profiles stay on the website; the extension receives only aggregate budget, required-condition keys and exact excluded-hotel identities. No cookies/debugger/
 webRequest or all_urls permissions. Content scripts do not run on passport hosts.
 
 Selection tasks: discover a bounded candidate pool from the city list, prioritizing list prices within the group budget → primary room rows → optional scoped room amenities → guarded checkout preview → exact-name lookup on the other platform → matching room rows and preview. Repeat per hotel. No hotel IDs or amounts are hard-coded in the selection workflow.
+
+Current default is reference-price reading, without an order preview, submission or payment. In `requirements_review`, finding three matching price/meal plans does not stop the search. `CONTINUE_SELECTION` resumes the same stored pool and cursor, skipping only exact names/platform IDs that the website has explicitly excluded. Each batch checks at most eight new hotels and the loaded pool contains at most twelve; the website may automatically continue the remaining pool. Login and verification still pause. `search.matched` is a package count, not proof that all personal requirements are met; exhausted scope is reported without claiming no hotel exists citywide. `smartWash` stays separate from generic smart toilets: only rendered, exact-room body-washing descriptions are recorded, never heating or automatic flushing alone. These additions have offline synthetic coverage; a new live continuation run is still required for deployment acceptance.
 Pause on authentication, verification, access restriction, identity/date/occupancy mismatch,
 DOM ambiguity. Bounded loading timeouts are recorded and the remaining candidates continue. No CAPTCHA solver, anti-block workaround or final order action.
 Ctrip and Tongcheng previews use only the scoped room-list control 预订 after room-name and current-price checks. Tongcheng excludes duplicate recommendation nodes, keeps the original bounded hotel link, refreshes a loading page at most once, and resumes from a passport tab by reopening the hotel page after the user acts. No login fields, cookies or account details are read.

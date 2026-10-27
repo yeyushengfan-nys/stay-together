@@ -1,4 +1,4 @@
-import {SITE_ORIGIN,ACTIVE,PAUSED,validateQuery,trustedSender,makeJob,summarize,allowedTaskURL,loginURL,applySnapshot,hotelKey,discoveryURL} from './core.js';
+import {SITE_ORIGIN,ACTIVE,PAUSED,validateQuery,trustedSender,makeJob,continueSelection,summarize,allowedTaskURL,loginURL,applySnapshot,hotelKey,discoveryURL} from './core.js';
 import {readHotelPage,openCtripPreview,openTongchengPreview,searchPlatformHotels,toggleCtripAmenities,expandCtripRoomPlans,expandTongchengRoomPlans} from './reader.js';
 let serial=Promise.resolve();
 function serialized(fn){const next=serial.then(fn,fn);serial=next.catch(()=>{});return next;}
@@ -8,7 +8,7 @@ async function tickSoon(){await chrome.alarms.create('collector-tick',{when:Date
 async function pause(job,status,message){job.status=status;job.message=message;job.revision++;await save(job);if(job.taskTabId!==null)try{await chrome.tabs.update(job.taskTabId,{active:true});}catch{}}
 async function step(){
  const job=await getJob();if(!job||!ACTIVE.includes(job.status))return;
- if(Date.now()-job.createdAt>45*60*1000){await pause(job,'needs_review','采集任务已超过45分钟，请核对行程后重新开始。');return;}
+ if(Date.now()-(job.roundStartedAt||job.createdAt)>45*60*1000){await pause(job,'needs_review','本批采集已超过45分钟，请核对行程后重新开始。');return;}
  const task=job.tasks[job.index];if(!task)return;
  try{
   if(job.taskTabId===null){
@@ -96,15 +96,19 @@ async function step(){
 async function command(message,sender,isPopup=false){
  if(!isPopup&&!trustedSender(sender))throw Error('只接受住一起网站发起的采集请求。');
  const type=message?.type;
- if(type==='HELLO')return {installed:true,version:chrome.runtime.getManifest?.()?.version||'0.2.7',codeVersion:'0.2.7',origin:SITE_ORIGIN,supportedCities:['上海','北京','杭州','广州','深圳','成都'],selectionWorkflow:true,referenceWorkflow:true};
+ if(type==='HELLO')return {installed:true,version:chrome.runtime.getManifest?.()?.version||'0.2.8',codeVersion:'0.2.8',origin:SITE_ORIGIN,supportedCities:['上海','北京','杭州','广州','深圳','成都'],selectionWorkflow:true,referenceWorkflow:true,continuationWorkflow:true,smartWashEvidence:true};
  let job=await getJob();
  if(type==='START'){
   if(isPopup||!Number.isInteger(sender.tab?.id))throw Error('请从住一起网站开始采集。');
   if(job&&(ACTIVE.includes(job.status)||PAUSED.includes(job.status)))throw Error('已有任务未结束，请继续或取消当前任务。');
   const q=validateQuery(message.query);job=makeJob(q,sender.tab.id);await save(job);await step();return {job:summarize(await getJob())};
  }
- if(!job)return {job:null};
+ if(!job){if(type==='CONTINUE_SELECTION')throw Error('本机没有保留可续查的候选池，请重新开始并保留已排除名单。');return {job:null};}
  if(message.jobId&&message.jobId!==job.id)throw Error('任务已变化，请重新连接。');
+ if(type==='CONTINUE_SELECTION'){
+  if(isPopup||!Number.isInteger(sender.tab?.id))throw Error('请从住一起网站继续找替代酒店。');
+  job=continueSelection(job,message.query);job.ownerTabId=sender.tab.id;await save(job);await step();return {job:summarize(await getJob())};
+ }
  if(type==='STATUS'){await step();return {job:summarize(await getJob())};}
  if(type==='RESUME'){
   if(PAUSED.includes(job.status)){

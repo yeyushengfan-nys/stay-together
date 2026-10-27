@@ -1,8 +1,8 @@
 # 本次公开文件清单
 
-当前公开源码对应v58，源提交01ee1b4，扩展0.2.7。只含下列文件，不含聊天、客服原文、私人证据或真实部署身份。
+本轮源码对应已部署v61（b7892fc52ce00a3779e8f696c345e27dd0c2f48b），扩展0.2.8，包含查询历史保留和启动储存保护修复。公开副本51个离线脚本通过；这些合成检查不代表v61真实刷新持久化、恢复后补查或完整推荐已通过。最终现场恢复与验收结论以 `PROJECT_STATUS.md` 为准。只含下列文件，不含聊天、客服原文、私人证据或真实部署身份。
 
-共249个文件，含本清单。
+共255个文件，含本清单。
 
 ```text
 .env.example
@@ -217,10 +217,14 @@ tests/fixtures/flyai-masked-response.json
 tests/test-ai-request-lifecycle.mjs
 tests/test-ai-source-and-deadline.mjs
 tests/test-audit-scope.mjs
+tests/test-boot-storage.mjs
 tests/test-citation-repair.mjs
+tests/test-collection-history.mjs
 tests/test-collector-status-recovery.mjs
 tests/test-collector.mjs
 tests/test-conflict-ownership-ui.mjs
+tests/test-continuation-worker.mjs
+tests/test-core-selection-continuation.mjs
 tests/test-decision-summary.mjs
 tests/test-decision-ui.mjs
 tests/test-evidence-preservation.mjs
@@ -233,6 +237,7 @@ tests/test-progressive-selection.mjs
 tests/test-quote-fact-boundary.mjs
 tests/test-quote-handoff.mjs
 tests/test-reader-selection-plans.mjs
+tests/test-reader-washing.mjs
 tests/test-recommendation-member-context.mjs
 tests/test-recommendation-schema.mjs
 tests/test-reference-prices.mjs
@@ -242,6 +247,7 @@ tests/test-rejection-diagnostics.mjs
 tests/test-review-coverage.mjs
 tests/test-review-scope.mjs
 tests/test-selection-client.mjs
+tests/test-selection-continuation.mjs
 tests/test-selection.mjs
 tests/test-shenzhen-name-match.mjs
 tests/test-smart-wash-boundary.mjs

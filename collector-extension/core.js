@@ -23,12 +23,21 @@ export function validateQuery(raw,now=Date.now()){
  if(raw.roomName!==undefined&&(typeof raw.roomName!=='string'||raw.roomName.length>180))throw Error('指定房型无效。');
  const budget=raw.budget==null?null:Number(raw.budget);
  if(budget!==null&&(!Number.isFinite(budget)||budget<=0||budget>100000))throw Error('预算必须是有效的每间每晚人民币金额。');
- const required=Array.isArray(raw.required)?[...new Set(raw.required)].filter(k=>['smart','laundry','nonSmoking','twinBeds','breakfast','freeCancel','parking','family','petFriendly','accessible','bathtub','gym','pool','invoice','desk','view','lateCheckin','quiet','mold'].includes(k)):[];
+ const required=Array.isArray(raw.required)?[...new Set(raw.required)].filter(k=>['smart','smartWash','laundry','nonSmoking','twinBeds','breakfast','freeCancel','parking','family','petFriendly','accessible','bathtub','gym','pool','invoice','desk','view','lateCheckin','quiet','mold'].includes(k)):[];
  const dp=raw.discoveryPreferences||{},discoveryPreferences={};for(const k of ['priceWeight','transitWeight','newnessWeight','facilitiesWeight'])discoveryPreferences[k]=Number.isFinite(dp[k])?Math.max(0,Math.min(5,dp[k])):3;
- discoveryPreferences.priorityHints=Array.isArray(dp.priorityHints)?[...new Set(dp.priorityHints.filter(k=>['smart','laundry','quiet','twinBeds','newness','transit','pool','bathtub','parking','nonSmoking'].includes(k)))].slice(0,10):[];
+ discoveryPreferences.priorityHints=Array.isArray(dp.priorityHints)?[...new Set(dp.priorityHints.filter(k=>['smart','smartWash','laundry','quiet','twinBeds','newness','transit','pool','bathtub','parking','nonSmoking'].includes(k)))].slice(0,10):[];
+ if(raw.searchGoal!==undefined&&!['packages','requirements_review'].includes(raw.searchGoal))throw Error('候选检查目标无效。');
+ if(raw.excludeHotels!==undefined&&(!Array.isArray(raw.excludeHotels)||raw.excludeHotels.length>30))throw Error('最多传入30家已明确排除的酒店。');
+ const excludeHotels=(raw.excludeHotels||[]).map(e=>{
+  if(!e||typeof e!=='object'||Array.isArray(e)||e.name!==undefined&&(typeof e.name!=='string'||e.name.length>180)||e.platformIds!==undefined&&(!e.platformIds||typeof e.platformIds!=='object'||Array.isArray(e.platformIds)))throw Error('已排除酒店的身份资料无效。');
+  const platformIds={};for(const [provider,id] of Object.entries(e.platformIds||{})){if(!['ctrip','tongcheng'].includes(provider)||typeof id!=='string'||!/^\d{1,14}$/.test(id))throw Error('已排除酒店的平台身份无效。');platformIds[provider]=id;}
+  const name=(e.name||'').trim();if(!name&&!Object.keys(platformIds).length)throw Error('已排除酒店需要完整名称或平台身份。');return {name,platformIds};
+ });
  if(raw.priceMode!==undefined&&!['reference','checkout'].includes(raw.priceMode))throw Error('价格采集模式无效。');
- return {city,checkin:raw.checkin,checkout:raw.checkout,adults,rooms,children:0,platforms,maxHotels,budget,required,discoveryPreferences,priceMode:raw.priceMode||'reference',area:String(raw.area||'').trim().slice(0,100),workflow:raw.workflow==='selection'?'selection':'quotes',...(raw.hotelNames?{hotelNames:[...new Set(raw.hotelNames.map(n=>n.trim()))]}:{}),...(raw.roomName?{roomName:raw.roomName.trim()}:{})};
+ return {city,checkin:raw.checkin,checkout:raw.checkout,adults,rooms,children:0,platforms,maxHotels,budget,required,discoveryPreferences,priceMode:raw.priceMode||'reference',searchGoal:raw.searchGoal||'packages',excludeHotels,area:String(raw.area||'').trim().slice(0,100),workflow:raw.workflow==='selection'?'selection':'quotes',...(raw.hotelNames?{hotelNames:[...new Set(raw.hotelNames.map(n=>n.trim()))]}:{}),...(raw.roomName?{roomName:raw.roomName.trim()}:{})};
 }
+export function excludedCandidate(candidate,provider,query){return (query.excludeHotels||[]).some(e=>e.name&&hotelKey(e.name)===hotelKey(candidate.name||candidate.hotel)||e.platformIds?.[provider]===String(candidate.id||candidate.hotelId));}
+const remainingCandidates=job=>(job.candidatePool||[]).slice(job.poolCursor||0).filter(c=>!excludedCandidate(c,job.primaryProvider,job.query)).length;
 export function discoveryURL(provider,q,term=''){
  const u=new URL(provider==='ctrip'?'https://hotels.ctrip.com/hotels/list/':'https://www.ly.com/hotel/hotellist');
  if(provider==='ctrip'){u.searchParams.set('cityId',CITIES[q.city].ctrip);u.searchParams.set('cityName',q.city);u.searchParams.set('checkIn',q.checkin);u.searchParams.set('checkOut',q.checkout);u.searchParams.set('crn','1');u.searchParams.set('adult',q.adults);u.searchParams.set('children','0');}
@@ -55,7 +64,7 @@ export function makeJob(query,tabId,now=Date.now()){
  const primary=query.platforms.includes('ctrip')?'ctrip':query.platforms[0];
  const tasks=query.workflow==='selection'?[{provider:primary,phase:'discover',url:discoveryURL(primary,query,query.area),searchTerm:query.area}]:query.platforms.map(provider=>({provider,phase:'discover',url:discoveryURL(provider,query)}));
  const progressive=query.workflow==='selection'&&query.priceMode==='reference'&&!query.hotelNames?.length;
- return {id:crypto.randomUUID(),query,ownerTabId:tabId,createdAt:now,updatedAt:now,status:'discovering',message:'准备按行程发现候选，再逐家匹配另一平台',tasks,index:0,offers:[],candidates:[],observations:[],errors:[],events:[],taskTabId:null,retries:0,revision:0,...(progressive?{candidatePool:[],poolCursor:0,primaryProvider:primary,planChecks:[],matchedHotelKeys:[],search:{strategy:'bounded_pool',poolSize:0,inspected:0,target:query.maxHotels,matched:0,inspectionLimit:8,stopReason:null}}:{})};
+ return {id:crypto.randomUUID(),query,ownerTabId:tabId,createdAt:now,roundStartedAt:now,updatedAt:now,status:'discovering',message:'准备按行程发现候选，再逐家匹配另一平台',tasks,index:0,offers:[],candidates:[],observations:[],errors:[],events:[],taskTabId:null,retries:0,revision:0,...(progressive?{candidatePool:[],poolCursor:0,primaryProvider:primary,planChecks:[],matchedHotelKeys:[],search:{strategy:'bounded_pool',goal:query.searchGoal||'packages',scope:'仅核对本次已加载的最多12家候选；套餐匹配不代表全部必须条件已证实。',poolSize:0,inspected:0,roundInspected:0,roundStartedAtInspected:0,excludeSkipped:0,target:query.maxHotels,matched:0,inspectionLimit:8,stopReason:null}}:{})};
 }
 // Matches only observable package constraints. Facilities and subjective reviews
 // remain separate evidence checks; this never declares a hotel fully eligible.
@@ -69,13 +78,31 @@ export function packageMatches(row,q){
 }
 function enqueuePoolCandidate(job){
  const s=job.search;if(!s)return false;
- if(s.matched>=s.target){s.stopReason='target_met';return false;}
- if(s.inspected>=s.inspectionLimit){s.stopReason='inspection_limit';return false;}
+ if(s.goal!=='requirements_review'&&s.matched>=s.target){s.stopReason='target_met';return false;}
+ while(job.poolCursor<job.candidatePool.length&&excludedCandidate(job.candidatePool[job.poolCursor],job.primaryProvider,job.query)){job.poolCursor++;s.excludeSkipped=(s.excludeSkipped||0)+1;}
  if(job.poolCursor>=job.candidatePool.length){s.stopReason='pool_exhausted';return false;}
+ if(s.inspected>=s.inspectionLimit){s.stopReason='inspection_limit';return false;}
  const c=job.candidatePool[job.poolCursor++],provider=job.primaryProvider;
- job.candidates.push({...c,provider});s.inspected++;
+ job.candidates.push({...c,provider});s.inspected++;s.roundInspected=s.inspected-(s.roundStartedAtInspected||0);
  job.tasks.push({provider,phase:'rooms',hotelId:c.id,name:c.name,canonicalName:c.name,poolCandidate:true,url:candidateURL(provider,c,job.query)});
  return true;
+}
+function searchMessage(job){
+ const s=job.search,terminal=['completed','failed'].includes(job.status);
+ if(s.goal==='requirements_review')return `本批新增检查${s.roundInspected||0}家，累计检查${s.inspected}家；累计套餐匹配${s.matched}家，仅是房型、餐食、取消与参考预算。${terminal?(s.stopReason==='inspection_limit'?'本批最多8家已检查，池内仍有候选可继续。':'本次已加载的候选池已检查完。'):'正在继续检查尚未排除的候选。'}全部必须条件是否已证实由网站证据核验决定，未知不算符合，不代表全城无酒店。`;
+ return terminal?`已查${s.inspected}家，至少一平台找到匹配房型、早餐、取消和参考预算的套餐${s.matched}家；${s.stopReason==='target_met'?'已达到候选目标':s.stopReason==='inspection_limit'?'已到本轮最多8家核对上限':'本次已加载的候选池已查完'}。必要设施与评价仍须核实，不代表全城搜索。`:`已查${s.inspected}家，套餐匹配${s.matched}/${s.target}家；不符合时继续查下一家。`;
+}
+export function continueSelection(job,raw,now=Date.now()){
+ if(!job||!['completed','failed'].includes(job.status)||!job.search||!Array.isArray(job.candidatePool))throw Error('当前任务没有可续查的候选池，请先结束任务或重新开始。');
+ const query=validateQuery(raw,now);
+ if(query.workflow!=='selection'||query.priceMode!=='reference'||query.hotelNames?.length||query.roomName||!query.platforms.includes(job.primaryProvider)||['city','checkin','checkout','rooms','adults','area'].some(k=>String(query[k]??'')!==String(job.query[k]??'')))throw Error('行程、区域或主平台已变化，请按新条件重新开始，不能沿用旧候选池。');
+ if(job.poolCursor>=job.candidatePool.length)throw Error('本次已加载候选池已查完，请调整区域或重新搜索；不代表全城没有符合酒店。');
+ const exclusions=new Map([...(job.query.excludeHotels||[]),...query.excludeHotels].map(e=>[JSON.stringify([hotelKey(e.name),e.platformIds]),e]));
+ if(exclusions.size>30)throw Error('已排除名单超过30家，请开始新的搜索范围。');
+ job.query={...query,searchGoal:'requirements_review',excludeHotels:[...exclusions.values()]};
+ job.roundStartedAt=now;job.updatedAt=now;job.search.goal='requirements_review';job.search.scope='仅核对本次已加载的最多12家候选；套餐匹配不代表全部必须条件已证实。';
+ job.search.roundStartedAtInspected=job.search.inspected;job.search.roundInspected=0;job.search.inspectionLimit=Math.min(12,job.search.inspected+8);job.search.stopReason=null;job.search.excludeSkipped??=0;job.retries=0;job.taskTabId=null;
+ const enqueued=enqueuePoolCandidate(job);job.status=enqueued?'collecting':job.offers.length?'completed':'failed';job.message=searchMessage(job);job.revision++;return job;
 }
 export function normalizeOffer(row,task,q,now=Date.now()){
  const num=v=>typeof v==='number'&&Number.isFinite(v)&&v>=0?v:null;
@@ -84,7 +111,7 @@ export function normalizeOffer(row,task,q,now=Date.now()){
  // No fallback from cancellation penalties, crossed-out prices or hotel start prices.
  return {id:task.provider+':'+task.hotelId+':'+String(row.rowKey),platform:task.provider==='ctrip'?'携程':'同程',provider:task.provider,hotel:String(task.canonicalName||row.hotel||task.name||''),platformHotelName:String(row.hotel||task.name||''),hotelId:task.hotelId,room:String(row.room||''),bed:String(row.bed||''),breakfast:Number.isInteger(row.breakfast)&&row.breakfast>=0&&row.breakfast<=10?row.breakfast:null,breakfastText:String(row.breakfastText||'未注明'),cancellation:String(row.cancellation||'未注明'),payment:String(row.payment||'未注明'),listNightly:num(row.listNightly),total,baseTotal:num(row.baseTotal),discountTotal:num(row.discountTotal),breakfastConfirmed:row.breakfastConfirmed===true,breakfastSource:String(row.breakfastSource||''),breakfastEvidence:String(row.breakfastEvidence||''),qualification:String(row.qualification||'当前登录账号口径，其他账号可能不同'),nightly:totalBasisConfirmed?Math.round(total/((Date.parse(q.checkout)-Date.parse(q.checkin))/86400000)*100)/100:null,totalBasisConfirmed,taxConfirmed:row.taxConfirmed===true,guarantee:num(row.guarantee),cashback:num(row.cashback),displayedPayment:num(row.displayedPayment),currency:'CNY',checkIn:q.checkin,checkOut:q.checkout,rooms:q.rooms,adults:q.adults,children:0,capturedAt:new Date(now).toISOString(),stage:row.stage||'room_list',source:hotelURL(task.provider,task.hotelId,q),evidence:raw,automatic:true,comparable:false,pending:Array.isArray(row.pending)?row.pending.map(String).slice(0,12):[]};
 }
-export function summarize(job){return {id:job.id,query:job.query,status:job.status,message:job.message,revision:job.revision,createdAt:job.createdAt,updatedAt:job.updatedAt,offers:job.offers,candidates:job.candidates,observations:job.observations||[],errors:job.errors,progress:{done:job.index,total:job.tasks.length},search:job.search||null,planChecks:job.planChecks||[],timing:{elapsedMs:job.updatedAt-job.createdAt,currentPhase:job.tasks[job.index]?.phase||null,currentProvider:job.tasks[job.index]?.provider||null},events:(job.events||[]).slice(-30),pausedTask:PAUSED.includes(job.status)?job.tasks[job.index]:null,taskTabId:job.taskTabId};}
+export function summarize(job){const remainingPool=remainingCandidates(job),availablePackageMatched=(job.matchedHotelKeys||[]).filter(k=>{const c=job.candidates.find(c=>hotelKey(c.name)===k);return c&&!excludedCandidate(c,c.provider,job.query);}).length;return {id:job.id,query:job.query,status:job.status,message:job.message,revision:job.revision,createdAt:job.createdAt,updatedAt:job.updatedAt,continuationReady:['completed','failed'].includes(job.status)&&!!job.search&&Array.isArray(job.candidatePool)&&remainingPool>0,offers:job.offers,candidates:job.candidates,observations:job.observations||[],errors:job.errors,progress:{done:job.index,total:job.tasks.length},search:job.search?{...job.search,remainingPool,availablePackageMatched}:null,planChecks:job.planChecks||[],timing:{elapsedMs:job.updatedAt-job.createdAt,roundElapsedMs:job.updatedAt-(job.roundStartedAt||job.createdAt),currentPhase:job.tasks[job.index]?.phase||null,currentProvider:job.tasks[job.index]?.provider||null},events:(job.events||[]).slice(-30),pausedTask:PAUSED.includes(job.status)?job.tasks[job.index]:null,taskTabId:job.taskTabId};}
 export function applySnapshot(job,snapshot,now=Date.now()){
  const task=job.tasks[job.index];if(!task)return job;
  job.updatedAt=now;job.revision++;
@@ -109,7 +136,7 @@ export function applySnapshot(job,snapshot,now=Date.now()){
   }
  }else if(snapshot.status==='ready'){
   for(const observation of (snapshot.observations||[]).slice(0,50)){
-   if(!['boolean','number'].includes(typeof observation.value)||!['opened','renovated','smart','laundry','metro','mold','nonSmoking','twinBeds','breakfast','freeCancel','parking','family','petFriendly','accessible','bathtub','gym','pool','invoice','desk','view','lateCheckin','quiet'].includes(observation.key)||!observation.evidence)continue;
+   if(!['boolean','number'].includes(typeof observation.value)||!['opened','renovated','smart','smartWash','laundry','metro','mold','nonSmoking','twinBeds','breakfast','freeCancel','parking','family','petFriendly','accessible','bathtub','gym','pool','invoice','desk','view','lateCheckin','quiet'].includes(observation.key)||!observation.evidence)continue;
    const item={...observation,hotel:task.canonicalName||task.name,provider:task.provider,source:hotelURL(task.provider,task.hotelId,job.query),capturedAt:new Date(now).toISOString()};
    (job.observations??=[]).push(item);
   }
@@ -141,6 +168,6 @@ export function applySnapshot(job,snapshot,now=Date.now()){
  job.index++;job.retries=0;job.taskTabId=null;
  if(job.search&&job.index>=job.tasks.length)enqueuePoolCandidate(job);
  job.status=job.index>=job.tasks.length?(job.offers.length?'completed':'failed'):'collecting';
- job.message=job.search?(job.status==='completed'||job.status==='failed'?`已查${job.search.inspected}家，至少一平台找到匹配房型、早餐、取消和参考预算的套餐${job.search.matched}家；${job.search.stopReason==='target_met'?'已达到候选目标':job.search.stopReason==='inspection_limit'?'已到本轮最多8家核对上限':'本次已加载的候选池已查完'}。必要设施与评价仍须核实，不代表全城搜索。`:`已查${job.search.inspected}家，套餐匹配${job.search.matched}/${job.search.target}家；不符合时继续查下一家。`):job.status==='completed'?(job.errors.length?'部分采集完成：':'自动采集结束：')+job.offers.length+'条房型套餐；未核实的条件仍单列。':job.status==='failed'?'本次未取得房型报价，请查看失败原因。':'继续下一家酒店';
+ job.message=job.search?searchMessage(job):job.status==='completed'?(job.errors.length?'部分采集完成：':'自动采集结束：')+job.offers.length+'条房型套餐；未核实的条件仍单列。':job.status==='failed'?'本次未取得房型报价，请查看失败原因。':'继续下一家酒店';
  return job;
 }

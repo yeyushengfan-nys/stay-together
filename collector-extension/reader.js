@@ -57,7 +57,7 @@ export function readHotelPage(q,task){
    // first. They never confirm the budget, a room's facilities or availability.
    const budgetTier=c=>q.budget==null?0:c.listNightly==null?1:c.listNightly<=q.budget?0:2;
    const p=q.discoveryPreferences||{},weight=k=>Math.max(0,Math.min(5,Number(p[k])||0)),hints=new Set(Array.isArray(p.priorityHints)?p.priorityHints:[]);
-   const signals=[['smart','智能马桶',/智能马桶/,/(?:无|没有|不提供)智能马桶/,'facilitiesWeight'],['laundry','洗衣设施',/洗衣房|自助洗衣|洗衣服务/,/(?:无|没有|不提供)(?:洗衣房|自助洗衣|洗衣服务)/,'facilitiesWeight'],['newness','新开业或装修线索',/新开业|新装修|全新/,/(?:并非|不是|非)(?:新开业|新装修|全新)/,'newnessWeight'],['quiet','安静或隔音线索',/安静|隔音好|隔音效果好/,/不安静|隔音(?:很)?(?:差|不好)|吵闹/,'facilitiesWeight'],['transit','地铁线索',/近地铁|地铁站|交通便利/,/远离地铁|地铁(?:很)?远/,'transitWeight']];
+   const signals=[['smart','智能马桶',/智能马桶/,/(?:无|没有|不提供)智能马桶/,'facilitiesWeight'],['smartWash','马桶身体清洗线索',/臀洗|妇洗|臀部清洗|妇部清洗|马桶清洗功能/,/(?:无|没有|不支持|不提供)(?:臀洗|妇洗|臀部清洗|妇部清洗|马桶清洗功能)/,'facilitiesWeight'],['laundry','洗衣设施',/洗衣房|自助洗衣|洗衣服务/,/(?:无|没有|不提供)(?:洗衣房|自助洗衣|洗衣服务)/,'facilitiesWeight'],['newness','新开业或装修线索',/新开业|新装修|全新/,/(?:并非|不是|非)(?:新开业|新装修|全新)/,'newnessWeight'],['quiet','安静或隔音线索',/安静|隔音好|隔音效果好/,/不安静|隔音(?:很)?(?:差|不好)|吵闹/,'facilitiesWeight'],['transit','地铁线索',/近地铁|地铁站|交通便利/,/远离地铁|地铁(?:很)?远/,'transitWeight']];
    for(const c of candidates){
     c.discoverySignals=signals.filter(([key,,yes,no,w])=>(hints.has(key)||weight(w)>0)&&yes.test(c.summary)&&!no.test(c.summary)).map(([key,label,,,w])=>({key,label,weight:weight(w)}));
     c.discoveryScore=c.discoverySignals.reduce((sum,s)=>sum+s.weight,0)+(q.budget&&c.listNightly!=null&&c.listNightly<=q.budget?weight('priceWeight')*Math.max(0,1-c.listNightly/q.budget):0);
@@ -98,6 +98,14 @@ export function readHotelPage(q,task){
   for(const [key,term] of [['smart','智能马桶'],['desk','书桌'],['bathtub','浴缸'],['nonSmoking','禁烟']]){
    const line=lines.find(l=>l===term||l===term+' 免费');if(line)observe(key,true,line,room);
    const negative=lines.find(l=>new RegExp('^(?:无|没有|不提供)'+term+'[。！.!]?$').test(l));if(negative)observe(key,false,negative,room);
+  }
+  // A heated seat or automatic flushing does not establish body washing. Only
+  // explicit words in this exact room's rendered facilities are recorded.
+  const washing=lines.filter(l=>/臀洗|妇洗|臀部(?:清洗|冲洗)|妇部(?:清洗|冲洗)|马桶(?:清洗|冲洗)功能/.test(l));
+  for(const line of washing){
+   if(/是否|有无|待确认|需确认|未注明|未查到|没查到|未取得|未确认|未知|不明确|没有(?:相关)?(?:证据|资料|信息)/.test(line))continue;
+   if(/(?:无|没有|不支持|不提供|不具备).{0,6}(?:臀洗|妇洗|臀部(?:清洗|冲洗)|妇部(?:清洗|冲洗)|(?:马桶)?(?:清洗|冲洗)功能)|(?:臀洗|妇洗|臀部(?:清洗|冲洗)|妇部(?:清洗|冲洗)|马桶(?:清洗|冲洗)功能)(?:功能)?[:：\s/／、]{0,4}(?:不支持|不提供|不可用|没有|缺失|未配备|无)/.test(line))observe('smartWash',false,line,room);
+   else if(line.length<=100)observe('smartWash',true,line,room);
   }
   if(/2张[\d.]+米单人床/.test(text))observe('twinBeds',true,text.match(/2张[\d.]+米单人床/)[0],room);
   else if(/1张[\d.]+米(?:大床|特大床|双人床)/.test(text))observe('twinBeds',false,text.match(/1张[\d.]+米(?:大床|特大床|双人床)/)[0],room);

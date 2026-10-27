@@ -25,7 +25,7 @@ collectorHTML=function(){
  const saved=collectorJob||state.clientCollection,job=saved&&collectorSameQuery(saved.query)?saved:null;
  const active=collectorJob&&(collectorActive.includes(collectorJob.status)||collectorPaused.includes(collectorJob.status));
  const opts=collectorJob?.query||{platforms:['ctrip','tongcheng'],maxHotels:3};
- return `<div class="eyebrow">02 · 自动找候选，逐家匹配同套餐</div><h2>房型参考价与同行条件，一起看</h2><p class="collector-connection">${collectorConnected?'● 已连接本机采集助手 '+E(collectorVersion):'○ 尚未连接 Chrome 采集助手'} · <button type="button" class="text-button" data-collector="CONNECT">重新连接</button> · <a href="/collector-setup.html" target="_blank" rel="noopener">安装与权限说明 ↗</a></p>${collectorConnected&&!collectorSelectionCapable?'<p class="notice">请把采集助手更新到0.2.7，以启用参考价模式与日期同步修复。</p>':''}<p>上方点击“找酒店并自动比价”：先发现最多3家非广告候选，然后逐家到另一平台按完整酒店名查找。参考价用于初筛；必要设施仍需明确证据。当前模式不进入订单预览。</p><details><summary>采集设置与单独重试</summary><div class="collector-controls"><label><input type="checkbox" id="collector-ctrip" ${opts.platforms.includes('ctrip')?'checked':''} ${active?'disabled':''}>携程</label><label><input type="checkbox" id="collector-tongcheng" ${opts.platforms.includes('tongcheng')?'checked':''} ${active?'disabled':''}>同程</label><span class="small">候选数量在上方行程中选择，默认3家。</span><button type="button" class="primary" data-collector="START" ${!collectorConnected||active||collectorBusy?'disabled':''}>重新找候选并查价 →</button></div></details><p class="small">本轮自动报价平台：携程、同程。飞猪、去哪儿分别显示未覆盖状态。支持上海等6城、1间房、1—4成人、无儿童、最多14晚；电脑及Chrome需保持运行。不会提交订单或付款。</p><p class="muted">完整同行偏好留在本站；助手只接收行程、汇总预算与必要条件，不接收姓名。年份不等于维护状态，未提及设施或霉味不代表满足条件。</p>${collectorError?`<p role="alert" class="notice">${E(collectorError)}</p>`:''}${active&&!collectorSameQuery(collectorJob.query)?`<p class="notice">另一个行程的任务仍在进行：${E(collectorJob.query.city)} ${E(collectorJob.query.checkin)}至${E(collectorJob.query.checkout)}。请先继续或取消。</p>`:''}${active?`<div class="collector-job"><b>${E(collectorJob.message)}</b><p>已完成 ${E(collectorJob.progress.done)} / ${E(collectorJob.progress.total)} 个步骤 · ${collectorJob.offers.length}条房型套餐</p><button type="button" class="secondary" data-collector="FOCUS">查看正在采集的平台页 ↗</button>${collectorPaused.includes(collectorJob.status)?'<button type="button" class="primary" data-collector="RESUME">我已处理，继续采集</button><button type="button" class="secondary" data-collector="SKIP">跳过这一页</button>':''}<button type="button" class="text-button" data-collector="CANCEL">取消采集</button></div>`:''}${saved&&!job?'<p class="notice">旧报价与上方城市、日期、人数或价格模式不同，已收起。</p>':''}${job?`<p class="small">本次目标 ${E(job.query.maxHotels)} 家 · 已发现 ${E(new Set(job.candidates.map(c=>StaySelection.key(c.canonicalName||c.name))).size)} 家 · 已用 ${Math.round((job.updatedAt-job.createdAt)/1000)} 秒</p><p><b>${E(job.query.city)} · ${E(job.query.checkin)}至${E(job.query.checkout)} · ${job.query.rooms}间 / ${job.query.adults}成人</b></p><p>${E(job.message)}${!collectorJob?'（上次记录，非本次实时查询）':''}</p>${job.errors.length?`<details><summary>${job.errors.length}项未采集成功</summary>${job.errors.map(e=>`<p>${E(e.provider==='tongcheng'?'同程':'携程')} · ${E(e.hotel||'搜索页')}：${E(e.message)}</p>`).join('')}</details>`:''}${collectorSelectionHTML(job)}<details class="selection-raw"><summary>展开原始房型套餐、来源和采集文字</summary>${collectorOffersHTML(job)}</details>`:'<p class="muted">填写上方行程并保存偏好后，一次开始找候选和查价。这里不会混入演示数据或人工历史价格。</p>'}`;
+ return `<div class="eyebrow">02 · 自动找候选，逐家匹配同套餐</div><h2>房型参考价与同行条件，一起看</h2><p class="collector-connection">${collectorConnected?'● 已连接本机采集助手 '+E(collectorVersion):'○ 尚未连接 Chrome 采集助手'} · <button type="button" class="text-button" data-collector="CONNECT">重新连接</button> · <a href="/collector-setup.html" target="_blank" rel="noopener">安装与权限说明 ↗</a></p>${collectorConnected&&!collectorContinuationCapable?'<p class="notice">请把采集助手更新到0.2.8，以排除已知冲突并继续查找；原同行要求不会改变。</p>':''}<p>上方点击“找酒店并自动比价”：先读取有限的非广告候选池，分批检查房型套餐并排除已明确冲突的候选；套餐匹配不代表必要设施已满足。参考价用于初筛；必要设施仍需明确证据。当前模式不进入订单预览。</p><details><summary>采集设置与单独重试</summary><div class="collector-controls"><label><input type="checkbox" id="collector-ctrip" ${opts.platforms.includes('ctrip')?'checked':''} ${active?'disabled':''}>携程</label><label><input type="checkbox" id="collector-tongcheng" ${opts.platforms.includes('tongcheng')?'checked':''} ${active?'disabled':''}>同程</label><span class="small">候选数量在上方行程中选择，默认3家。</span><button type="button" class="primary" data-collector="START" ${!collectorConnected||active||collectorBusy?'disabled':''}>重新找候选并查价 →</button></div></details><p class="small">本轮自动报价平台：携程、同程。飞猪、去哪儿分别显示未覆盖状态。支持上海等6城、1间房、1—4成人、无儿童、最多14晚；电脑及Chrome需保持运行。不会提交订单或付款。</p><p class="muted">完整同行偏好留在本站；助手只接收行程、汇总预算与必要条件，不接收姓名。年份不等于维护状态，未提及设施或霉味不代表满足条件。</p>${collectorError?`<p role="alert" class="notice">${E(collectorError)}</p>`:''}${active&&!collectorSameQuery(collectorJob.query)?`<p class="notice">另一个行程的任务仍在进行：${E(collectorJob.query.city)} ${E(collectorJob.query.checkin)}至${E(collectorJob.query.checkout)}。请先继续或取消。</p>`:''}${active?`<div class="collector-job"><b>${E(collectorJob.message)}</b><p>已完成 ${E(collectorJob.progress.done)} / ${E(collectorJob.progress.total)} 个步骤 · ${collectorJob.offers.length}条房型套餐</p><button type="button" class="secondary" data-collector="FOCUS">查看正在采集的平台页 ↗</button>${collectorPaused.includes(collectorJob.status)?'<button type="button" class="primary" data-collector="RESUME">我已处理，继续采集</button><button type="button" class="secondary" data-collector="SKIP">跳过这一页</button>':''}<button type="button" class="text-button" data-collector="CANCEL">取消采集</button></div>`:''}${saved&&!job?'<p class="notice">旧报价与上方城市、日期、人数或价格模式不同，已收起。</p>':''}${job?`<p class="small">本次目标 ${E(job.query.maxHotels)} 家 · 已发现 ${E(new Set(job.candidates.map(c=>StaySelection.key(c.canonicalName||c.name))).size)} 家 · 已用 ${Math.round((job.updatedAt-job.createdAt)/1000)} 秒</p><p><b>${E(job.query.city)} · ${E(job.query.checkin)}至${E(job.query.checkout)} · ${job.query.rooms}间 / ${job.query.adults}成人</b></p><p>${E(job.message)}${!collectorJob?'（上次记录，非本次实时查询）':''}</p>${job.errors.length?`<details><summary>${job.errors.length}项未采集成功</summary>${job.errors.map(e=>`<p>${E(e.provider==='tongcheng'?'同程':'携程')} · ${E(e.hotel||'搜索页')}：${E(e.message)}</p>`).join('')}</details>`:''}${collectorSelectionHTML(job)}<details class="selection-raw"><summary>展开原始房型套餐、来源和采集文字</summary>${collectorOffersHTML(job)}</details>`:'<p class="muted">填写上方行程并保存偏好后，一次开始找候选和查价。这里不会混入演示数据或人工历史价格。</p>'}`;
 };
 
 function collectorSyncCandidates(job){
@@ -40,19 +40,51 @@ function collectorSyncCandidates(job){
  state.hotelSelection=ids;state.collectorAppliedRevision=job.id+':'+job.revision;delete state.aiResult;
 }
 
+function collectorReviewRows(query=collectorQuery()){
+ if(typeof HotelPackageMatch==='undefined'||typeof HotelDecisionSummary==='undefined')return [];
+ const hotels=state.hotels.filter(h=>!h.demo&&HotelJourney.city(h.city)===HotelJourney.city(query.city)&&(StayQuoteEvidence.clean(h.quoteBundle,query,h.name)?.offers.length||window.StayReferencePrices.hasAttempt(h,query))).map(h=>{
+  const {derivedHotel,...packageMatch}=HotelPackageMatch.build(h,state.people,query);return {...derivedHotel,packageMatch};
+ });
+ return HotelDecisionSummary.build(hotels,state.people,query);
+}
+function collectorExcludedHotels(query=collectorQuery()){
+ return collectorReviewRows(query).filter(r=>r.conflicts.some(c=>r.hotel.packageMatch?.selectedOffer||!['budget','breakfast','freeCancel','twinBeds'].includes(c.key))).slice(0,30).map(r=>{
+  const platformIds={};
+  for(const offer of r.hotel.quoteBundle?.offers||[]){try{const u=new URL(offer.source),id=u.searchParams.get('hotelId')||u.pathname.match(/\/hotels\/(\d+)\.html/)?.[1];if(/^\d+$/.test(id||''))platformIds[offer.provider]=id;}catch{}}
+  return {name:r.hotel.name,platformIds};
+ });
+}
+function collectorCanContinue(job,query){
+ return !!job&&['completed','failed'].includes(job.status)&&job.query?.workflow==='selection'&&job.continuationReady===true&&!!job.search&&['city','checkin','checkout','rooms','adults','area'].every(k=>String(job.query[k]??'').replace(/市$/,'')===String(query[k]??'').replace(/市$/,''));
+}
+const collectorAutomaticRounds=new Set();
+function collectorMaybeContinue(job){
+ if(job?.status!=='completed'||job.query?.searchGoal!=='requirements_review'||job.continuationReady!==true||!(job.search?.remainingPool>0)||!collectorSameQuery(job.query)||!collectorContinuationCapable)return false;
+ const key=job.id+':'+job.revision;if(collectorAutomaticRounds.has(key))return false;
+ const ready=collectorReviewRows().filter(r=>r.formalEligible||(r.hotel.packageMatch?.selectedOffer&&r.budget.basis==='reference'&&r.budget.within===true&&!r.conflicts.length&&r.missing.every(x=>x.key==='budget')));
+ if(ready.length>=2)return false;
+ collectorAutomaticRounds.add(key);
+ setTimeout(()=>{if(collectorBusy||collectorJob?.id!==job.id||collectorJob?.revision!==job.revision||!collectorSameQuery(job.query))return;return window.StartHotelSelection({continue:true,automatic:true});},0);
+ return true;
+}
 window.StartHotelSelection=async function(options={}){
  if(collectorBusy)return;if(!state.preferencesConfirmed){toast('请先核对并保存同行偏好');return;}
  if(!collectorConnected)await collectorConnect();
- if(!collectorConnected||!collectorSelectionCapable){collectorError='请在已安装0.2.7采集助手的Chrome中打开本站，并刷新页面。';collectorPaint();return;}
+ if(!collectorConnected||!collectorSelectionCapable||!collectorContinuationCapable){collectorError='请更新并重新加载0.2.8采集助手，再刷新本站；这一版才支持排除已知冲突并继续查找，原同行要求不会改变。';collectorPaint();return;}
  collectorBusy=true;collectorError='';
  try{
-  const data=await collectorRequest('START',{query:{...collectorQuery(),platforms:options.platforms||['ctrip','tongcheng'],maxHotels:Number(document.getElementById('discovery-count')?.value||state.collectorCandidateCount||3),workflow:'selection'}});
-  const q=data.job.query;state.trip={...state.trip,city:q.city,checkin:q.checkin,checkout:q.checkout,rooms:q.rooms,adults:q.adults,area:q.area};state.hotelSelection=[];delete state.aiResult;save();collectorAccept(data);render();
+  const query={...collectorQuery(),platforms:options.platforms||['ctrip','tongcheng'],maxHotels:Number(document.getElementById('discovery-count')?.value||state.collectorCandidateCount||3),workflow:'selection',searchGoal:'requirements_review'};
+  query.excludeHotels=collectorExcludedHotels(query);
+  const previous=collectorJob||state.clientCollection,continuing=options.continue===true&&collectorCanContinue(previous,query),sameTrip=['city','checkin','checkout','rooms','adults'].every(k=>String(state.trip[k]??(k==='rooms'?1:k==='adults'?state.people.length:''))===String(query[k]??''));
+  const data=await collectorRequest(continuing?'CONTINUE_SELECTION':'START',{...(continuing?{jobId:previous.id}:{}),query});
+  const q=data.job.query;state.trip={...state.trip,city:q.city,checkin:q.checkin,checkout:q.checkout,rooms:q.rooms,adults:q.adults,area:q.area};if(!sameTrip)state.hotelSelection=[];delete state.aiResult;save();collectorAccept(data);render();
  }catch(e){collectorError=e.message;collectorPaint();}finally{collectorBusy=false;collectorPaint();}
 };
 
 // Intercept the old advanced START control before its bubbling listener.
 document.addEventListener('click',event=>{
+ const continuation=event.target.closest('[data-collector="CONTINUE_SELECTION"]');
+ if(continuation){event.stopImmediatePropagation();event.preventDefault();window.StartHotelSelection({continue:true});return;}
  const target=event.target.closest('[data-collector="START"]');
  if(target&&!target.hasAttribute('data-collector-hotel')){event.stopImmediatePropagation();event.preventDefault();window.StartHotelSelection({platforms:[document.getElementById('collector-ctrip')?.checked?'ctrip':null,document.getElementById('collector-tongcheng')?.checked?'tongcheng':null].filter(Boolean)});}
 },true);

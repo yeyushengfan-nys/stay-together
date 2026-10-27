@@ -1,7 +1,7 @@
 {
   "kind": "offline_mock_regression_not_real_users",
-  "count": 45,
-  "passed": 45,
+  "count": 51,
+  "passed": 51,
   "failed": 0,
   "tests": [
     {
@@ -57,7 +57,15 @@
       "exit_code": 0
     },
     {
+      "file": "tests/test-boot-storage.mjs",
+      "exit_code": 0
+    },
+    {
       "file": "tests/test-citation-repair.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-collection-history.mjs",
       "exit_code": 0
     },
     {
@@ -70,6 +78,14 @@
     },
     {
       "file": "tests/test-conflict-ownership-ui.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-continuation-worker.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-core-selection-continuation.mjs",
       "exit_code": 0
     },
     {
@@ -121,6 +137,10 @@
       "exit_code": 0
     },
     {
+      "file": "tests/test-reader-washing.mjs",
+      "exit_code": 0
+    },
+    {
       "file": "tests/test-recommendation-member-context.mjs",
       "exit_code": 0
     },
@@ -157,6 +177,10 @@
       "exit_code": 0
     },
     {
+      "file": "tests/test-selection-continuation.mjs",
+      "exit_code": 0
+    },
+    {
       "file": "tests/test-selection.mjs",
       "exit_code": 0
     },
@@ -187,10 +211,11 @@
   ],
   "real_network_blocked": true,
   "date": "2026-10-27",
-  "source_version": "Sites v58 / extension 0.2.7",
-  "source_commit": "01ee1b47bd92aa351b13255dfae743d6958fb863",
+  "source_version": "Sites v61 / extension 0.2.8",
+  "source_commit": "b7892fc52ce00a3779e8f696c345e27dd0c2f48b",
+  "pending_deployment": false,
+  "verification_scope": "51 offline scripts on the public copy. No real-browser storage was read and no backup was created. These checks do not establish v61 refresh persistence, the ongoing post-recovery collection, or a complete hotel recommendation; final live results are recorded separately in PROJECT_STATUS.md.",
   "public_copy_framework_build_this_iteration": false,
-  "source_framework_build_and_deployment": "passed",
   "public_copy_clean_dependency_install_verified": false,
   "live_hotel_success_not_implied": true
 }

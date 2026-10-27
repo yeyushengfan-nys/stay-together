@@ -17,7 +17,7 @@ vm.runInContext(await readFile(new URL('../public/collector-client.js',import.me
 vm.runInContext(await readFile(new URL('../public/selection-client.js',import.meta.url),'utf8'),ctx);
 const job={id:'new-task',revision:4,query:{...q,workflow:'selection',priceMode:'reference'},status:'completed',message:'completed',candidates:[{name:'上海测试酒店'}],offers:[],observations:[],errors:[],progress:{done:1,total:1}};
 ctx.respond=async(type,extra)=>{request={type,...extra};if(fail)throw Error('platform failed');return {job:{...structuredClone(job),query:structuredClone(extra?.query||job.query)}};};
-vm.runInContext('collectorConnected=true;collectorSelectionCapable=true;collectorRequest=respond;',ctx);
+vm.runInContext('collectorConnected=true;collectorSelectionCapable=true;collectorContinuationCapable=true;collectorRequest=respond;',ctx);
 await ctx.window.StartHotelSelection();
 assert.equal(request.type,'START');assert.equal(request.query.workflow,'selection');assert.equal(request.query.maxHotels,3);assert.equal(request.query.budget,4000);assert(request.query.required.includes('smart'));assert(!('people' in request.query));assert.equal(JSON.stringify(request.query).includes('朋友'),false);
 assert.equal(state.trip.city,'上海');assert.equal(state.hotelSelection.length,1);assert.notEqual(state.hotelSelection[0],'beijing-old');assert(state.hotels.some(h=>h.id==='beijing-old'));assert.deepEqual(state.people,before);assert(!state.hotels.find(h=>h.city==='上海').demo);

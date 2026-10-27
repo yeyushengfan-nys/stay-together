@@ -39,7 +39,9 @@
    return e;
   });
  }
- root.StayReferencePrices={key,chosen,build,retainedEvidence};
+ function sameTrip(a,b){return !!a&&!!b&&['city','checkin','checkout','rooms','adults'].every(k=>k==='city'?key(a[k])===key(b[k]):String(a[k]??(k==='rooms'?1:k==='adults'?2:''))===String(b[k]??(k==='rooms'?1:k==='adults'?2:'')));}
+ function hasAttempt(h,query){return (h.collectionAttempts||[]).some(a=>sameTrip(a.scope,query));}
+ root.StayReferencePrices={key,chosen,build,retainedEvidence,sameTrip,hasAttempt};
 })(typeof window!=='undefined'?window:globalThis);
 
 function collectorReferenceHTML(job){
@@ -54,13 +56,16 @@ function collectorReferenceHTML(job){
 }
 
 function collectorSyncReferenceCandidates(job){
- const result=window.StayReferencePrices.build(job),ids=[];
+ const result=window.StayReferencePrices.build(job),ids=job.query.searchGoal==='requirements_review'?state.hotels.filter(h=>!h.demo&&HotelJourney.city(h.city)===HotelJourney.city(job.query.city)&&(StayQuoteEvidence.clean(h.quoteBundle,job.query,h.name)?.offers.length||window.StayReferencePrices.hasAttempt(h,job.query))).map(h=>h.id):[];
  for(const r of result.rows){
   const old=state.hotels.find(h=>!h.demo&&StaySelection.key(h.name)===StaySelection.key(r.name)&&HotelJourney.city(h.city)===HotelJourney.city(job.query.city));
-  const id=old?.id||uid(),o=r.reference,room=o?.room||'目标房型未取得',observed=StaySelection.facts(job,r.name,room);
+  const id=old?.id||uid(),o=r.reference,room=o?.room||old?.room||'目标房型未取得',observed=StaySelection.facts(job,r.name,room);
   const bundle=StayQuoteEvidence.fromJob(job,r.name,o),packageFacts=StayQuoteEvidence.facts(bundle,room);
-  const h={...old,quoteBundle:bundle,id,name:r.name,city:job.query.city,area:job.query.area||'',room,price:null,referencePrice:o?.listNightly??null,priceBasis:'room_page_reference',metro:observed.values.metro??null,quoteDate:o?.capturedAt?.slice(0,10)||'',source:o?.source||'',terms:o?`房型页参考价：人民币${o.listNightly}元／每间每晚；${job.query.checkin}至${job.query.checkout}，${job.query.rooms}间/${job.query.adults}成人。${o.breakfastText}；${o.cancellation}；${o.payment}。未核对全程总额、税费及最终优惠。`:'本次未取得符合所选条件的房型参考价',demo:false,collector:true,facts:{smart:null,laundry:null,mold:null,opened:null,renovated:null,...observed.values,...packageFacts},evidence:[...window.StayReferencePrices.retainedEvidence(old,room),...observed.observations.map((obs,i)=>({id:job.id+'-'+id+'-'+i,text:'【平台页面资料，非住客原话】\n'+obs.evidence,claims:{[obs.key]:obs.value},platform:obs.provider==='ctrip'?'携程':'同程',room:obs.room||'酒店级资料',date:obs.capturedAt.slice(0,10),source:obs.source,confirmed:false,demo:false,collectorSource:true,image:null}))]};
+  const scope=Object.fromEntries(['city','checkin','checkout','rooms','adults','area'].map(k=>[k,job.query[k]??(k==='area'?'':k==='rooms'?1:k==='adults'?2:'')]));
+  const attempt={jobId:job.id,scope,status:bundle?.offers.some(x=>x.listNightly>0)?'quoted':'no_quote',receivedAt:new Date(job.updatedAt||Date.now()).toISOString()},attempts=[...(old?.collectionAttempts||[])],previous=attempts.findIndex(a=>a.jobId===job.id);if(previous>=0)attempts[previous]=attempt;else attempts.push(attempt);
+  const roomChanged=window.StayReferencePrices.key(room)!==window.StayReferencePrices.key(old?.room),reset=roomChanged?Object.fromEntries(['smart','smartWash','mold','quiet','nonSmoking','accessible','family','bathtub','desk','view'].map(k=>[k,null])):{};
+  const h={...old,collectionAttempts:attempts,previousQuoteBundle:!bundle?(old?.quoteBundle||old?.previousQuoteBundle||null):old?.previousQuoteBundle,quoteBundle:bundle,id,name:r.name,city:job.query.city,area:job.query.area||'',room,price:null,referencePrice:bundle?o?.listNightly??null:null,priceBasis:'room_page_reference',metro:observed.values.metro??old?.metro??null,quoteDate:o?.capturedAt?.slice(0,10)||'',source:o?.source||'',terms:o?`房型页参考价：人民币${o.listNightly}元／每间每晚；${job.query.checkin}至${job.query.checkout}，${job.query.rooms}间/${job.query.adults}成人。${o.breakfastText}；${o.cancellation}；${o.payment}。未核对全程总额、税费及最终优惠。`:'本次未取得符合所选条件的房型参考价',demo:false,collector:true,facts:{smart:null,laundry:null,mold:null,opened:null,renovated:null,...old?.facts,...reset,...observed.values,...packageFacts,...(!bundle?{twinBeds:null}:{})},evidence:[...window.StayReferencePrices.retainedEvidence(old,room),...observed.observations.map((obs,i)=>({id:job.id+'-'+id+'-'+i,text:'【平台页面资料，非住客原话】\n'+obs.evidence,claims:{[obs.key]:obs.value},platform:obs.provider==='ctrip'?'携程':'同程',room:obs.room||'酒店级资料',date:obs.capturedAt.slice(0,10),source:obs.source,confirmed:false,demo:false,collectorSource:true,image:null}))]};
   const at=state.hotels.findIndex(h=>h.id===id);if(at>=0)state.hotels[at]=h;else state.hotels.push(h);ids.push(id);
  }
- state.hotelSelection=ids;state.collectorAppliedRevision=job.id+':'+job.revision;delete state.aiResult;
+ state.hotelSelection=[...new Set(ids)];state.collectorAppliedRevision=job.id+':'+job.revision;delete state.aiResult;
 }
