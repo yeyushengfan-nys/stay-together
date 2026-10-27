@@ -4,7 +4,7 @@
 
 [在线网站](https://stay-together-yusi-1024.yusinn0613.chatgpt.site/) · [GitHub 仓库](https://github.com/yeyushengfan-nys/stay-together) · [项目进度](PROJECT_STATUS.md)
 
-本仓库是已部署网站 **v51** 的源码导出，来源提交 **`59a905f`**；Chrome 采集扩展版本为 **0.2.7**。部署版本、扩展版本和 `package.json` 的 `0.1.0` 是不同编号。最新验证结果与统计口径以 [PROJECT_STATUS.md](PROJECT_STATUS.md) 为准。
+本仓库对应已部署网站 **v55**，来源提交 **`682d0260270cfa503f206234e95d7d2ddc20689c`**；Chrome 采集扩展版本为 **0.2.7**。部署版本、扩展版本和 `package.json` 的 `0.1.0` 是不同编号。最新验证结果与统计口径以 [PROJECT_STATUS.md](PROJECT_STATUS.md) 为准。
 
 ![界面演示（虚构案例，不是真实入住推荐）](docs/images/interface-demo.png)
 
@@ -24,8 +24,8 @@ node scripts/preview-hotel.mjs
 | --- | --- |
 | 网页 | 管理行程、同行偏好、候选及证据；“我的行程”和虚构演示使用独立本地存储。 |
 | Chrome 扩展 | 在用户自己的 Chrome 中读取携程、同程可见房型页参考价、早餐和取消文字；登录、验证码及访问异常会暂停。当前配置仅连接项目线上域名。 |
-| AI 后端 | 整理截图、解释评价、结合逐人偏好形成核实清单，并校验条件与引用。线上付费调用仅开放给配置的所有者账号；克隆源码不会取得网站的密钥或权限。 |
-| 决策边界 | 参考价用于初筛，不等于最终含税应付价；套餐不同不标“最低价”。最近记录的真实模型测试输出了核实候选，**正式入住首选／备选为 0**，原因是必要证据仍不足。 |
+| AI 后端 | 整理截图、解释评价、结合逐人偏好形成选择或核实清单，并校验条件与引用。线上付费调用及失败诊断仅开放给获准的所有者账号；克隆源码不会取得网站的密钥或权限。 |
+| 决策边界 | 显式使用“参考价选择”时，以当前行程、选中房型及匹配套餐参考价检查预算；其他必要条件缺证据或冲突仍阻断。参考价不是最终应付价，套餐不同不标“最低价”。**两家真实酒店均满足必要条件并输出首选／备选的正向验收尚未通过。** |
 | 尚未交付 | 免登录的完整 AI Demo、飞猪／去哪儿自动完整报价、多人实时同步、微信小程序均未完成或发布。 |
 
 截图存于当前浏览器的 IndexedDB，行程、偏好及已接受结果存于 localStorage；分享网址不会同步这些资料。点击 AI 分析时，相应材料才会发送至配置的服务端及模型服务。自动查价需要使用者自己的平台登录，由使用者处理验证码，不提交订单或付款。
@@ -51,8 +51,13 @@ node tests/test-quote-handoff.mjs
 node tests/test-tongcheng-loading.mjs
 node tests/test-ai-request-lifecycle.mjs
 node tests/test-decision-ui.mjs
+node tests/test-reference-selection.mjs
+node tests/test-reference-selection-ui.mjs
+node tests/test-conflict-ownership-ui.mjs
+node tests/test-review-scope.mjs
+node tests/test-rejection-diagnostics.mjs
 ```
 
 离线回归通过只证明这些测试断言成立，不能代表平台始终可采集、模型普遍准确或用户已经节省时间。不要把 `scripts/test-live-research.mjs` 等现场脚本当作离线测试运行。
 
-本次公开副本验证：34 个离线测试脚本通过；无依赖预览的 5 个 HTTP 路径返回 200；使用既有依赖的框架构建通过。未测试一次全新依赖安装，未调用真实 AI。详见 [检查记录](docs/public-source-checks.json)。
+本次 v55 公开副本验证：**39／39 个离线测试脚本通过**，运行时阻断真实网络请求。未调用真实 AI，未重跑本轮页面预览或框架构建；未测试一次全新依赖安装。详见 [检查记录](docs/public-source-checks.json)。

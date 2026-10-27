@@ -1,197 +1,167 @@
 {
   "date": "2026-10-27",
-  "source_version": "Sites v51 / extension 0.2.7",
+  "source_version": "Sites v55 / extension 0.2.7",
+  "source_commit": "682d0260270cfa503f206234e95d7d2ddc20689c",
   "kind": "offline_mock_regression_not_real_users",
-  "count": 34,
-  "passed": 34,
+  "count": 39,
+  "passed": 39,
+  "failed": 0,
   "tests": [
     {
       "file": "test-ai.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 64
+      "exit_code": 0
     },
     {
       "file": "test-audit.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 61
+      "exit_code": 0
     },
     {
       "file": "test-claims.cjs",
-      "exit_code": 0,
-      "elapsed_ms": 39
+      "exit_code": 0
     },
     {
       "file": "test-discovery.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 57
+      "exit_code": 0
     },
     {
       "file": "test-engine.cjs",
-      "exit_code": 0,
-      "elapsed_ms": 37
+      "exit_code": 0
     },
     {
       "file": "test-journey.cjs",
-      "exit_code": 0,
-      "elapsed_ms": 38
+      "exit_code": 0
     },
     {
       "file": "test-mode-api.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 55
+      "exit_code": 0
     },
     {
       "file": "test-price-compare.cjs",
-      "exit_code": 0,
-      "elapsed_ms": 37
+      "exit_code": 0
     },
     {
       "file": "test-price-search.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 82
+      "exit_code": 0
     },
     {
       "file": "test-research.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 55
+      "exit_code": 0
     },
     {
       "file": "tests/test-ai-request-lifecycle.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 43
+      "exit_code": 0
     },
     {
       "file": "tests/test-ai-source-and-deadline.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 84
+      "exit_code": 0
     },
     {
       "file": "tests/test-audit-scope.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 35
+      "exit_code": 0
     },
     {
       "file": "tests/test-citation-repair.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 54
+      "exit_code": 0
     },
     {
       "file": "tests/test-collector-status-recovery.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 42
+      "exit_code": 0
     },
     {
       "file": "tests/test-collector.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 80
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-conflict-ownership-ui.mjs",
+      "exit_code": 0
     },
     {
       "file": "tests/test-decision-summary.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 39
+      "exit_code": 0
     },
     {
       "file": "tests/test-decision-ui.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 58
+      "exit_code": 0
     },
     {
       "file": "tests/test-evidence-preservation.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 36
+      "exit_code": 0
     },
     {
       "file": "tests/test-multi-hotel-coverage-repair.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 73
+      "exit_code": 0
     },
     {
       "file": "tests/test-paired-citations.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 178
+      "exit_code": 0
     },
     {
       "file": "tests/test-progressive-selection.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 49
+      "exit_code": 0
     },
     {
       "file": "tests/test-quote-fact-boundary.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 35
+      "exit_code": 0
     },
     {
       "file": "tests/test-quote-handoff.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 62
+      "exit_code": 0
     },
     {
       "file": "tests/test-reader-selection-plans.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 52
+      "exit_code": 0
     },
     {
       "file": "tests/test-recommendation-member-context.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 52
+      "exit_code": 0
     },
     {
       "file": "tests/test-recommendation-schema.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 39
+      "exit_code": 0
     },
     {
       "file": "tests/test-reference-prices.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 50
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-reference-selection-ui.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-reference-selection.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-rejection-diagnostics.mjs",
+      "exit_code": 0
     },
     {
       "file": "tests/test-review-coverage.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 54
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-review-scope.mjs",
+      "exit_code": 0
     },
     {
       "file": "tests/test-selection-client.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 54
+      "exit_code": 0
     },
     {
       "file": "tests/test-selection.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 49
+      "exit_code": 0
     },
     {
       "file": "tests/test-shenzhen-name-match.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 34
+      "exit_code": 0
     },
     {
       "file": "tests/test-tongcheng-loading.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 36
+      "exit_code": 0
     },
     {
       "file": "tests/test-verification-shortlist.mjs",
-      "exit_code": 0,
-      "elapsed_ms": 75
+      "exit_code": 0
     }
-  ],
-  "ui_http_smoke": {
-    "routes": [
-      "/",
-      "/app.js",
-      "/ai.js",
-      "/collector-setup.html",
-      "/api/ai/status"
-    ],
-    "all_http_200": true,
-    "paid_calls": 0
-  },
-  "framework_build": {
-    "command": "node scripts/run-framework.mjs build",
-    "result": "passed",
-    "dependencies": "existing installed dependencies, not a clean install",
-    "deployment_identity": "public placeholder, not live Site identity",
-    "paid_calls": 0
-  }
+  ]
 }

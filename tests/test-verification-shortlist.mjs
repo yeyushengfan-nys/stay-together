@@ -83,6 +83,25 @@ bad=answer(snapshot);bad.verification_shortlist[0].reasons[0].citations=[{source
 bad=answer(snapshot);bad.verification_shortlist[0].verify_next.pop();assertCode(()=>checkRecommendation(bad,snapshot,sources),'invalid_verification_questions');
 bad=answer(snapshot);bad.verification_shortlist[0].verify_next[0].condition='添加的无关要求';assertCode(()=>checkRecommendation(bad,snapshot,sources),'invalid_verification_questions');
 for(const unsafe of ['可以放心入住，已经满足所有必要条件。','同条件最终更便宜。','这家配备智能马桶。','房间很安静。','没有霉味。']){bad=answer(snapshot);bad.verification_shortlist[0].reasons[0].explanation=unsafe;assertCode(()=>checkRecommendation(bad,snapshot,sources),'unsafe_verification_claim');}
+// Reproduced semantic failure: an unknown facility cannot become a definite
+// negative merely because the answer is only a verification work queue.
+const actualUnknownDenial='不过这不是你要求的智能马桶房型，且电子普通发票、晚到保房都未确认，所以只能放在核实顺序里。';
+for(const statement of [actualUnknownDenial,'这间没有智能马桶。','这间不配备智能马桶。','这不是所需的智能马桶房型。','不是未知，这间没有智能马桶。']){
+ const candidate=answer(snapshot);candidate.verification_shortlist[0].reasons[0].explanation=statement;
+ assert.throws(()=>checkRecommendation(candidate,snapshot,sources),e=>e.code==='unsafe_verification_claim'&&e.verification_issue.rule_id==='unknown_as_denied');
+}
+for(const statement of [
+ '该目标房型是否配备智能马桶仍待确认，不能从未知推断有或无。',
+ '未查到资料不代表没有智能马桶。',
+ '目前未查到智能马桶的直接资料，因此不能认定该房型没有智能马桶。',
+ '尚不能说这不是你要求的智能马桶房型，需要先核对该房型资料。'
+]){const candidate=answer(snapshot);candidate.verification_shortlist[0].reasons[0].explanation=statement;checkRecommendation(candidate,snapshot,sources);}
+const scopedDenialInput=input();scopedDenialInput.hotels[0].evidence.push({id:'synthetic-other-room',confirmed:true,platform:'合成测试材料',room:'其他房型',text:'合成材料，其他房型的住客短引：“没有智能马桶”。',claims:{}});
+const scopedDenial=validateSnapshot(scopedDenialInput);
+let scopedAnswer=answer(scopedDenial.snapshot);scopedAnswer.verification_shortlist[0].reasons[0].explanation='其他房型的住客短引“没有智能马桶”，不能据此认定目标房型没有智能马桶，目标房型仍待核实。';
+scopedAnswer.verification_shortlist[0].reasons[0].citations.push({source_id:'synthetic-other-room',quote:'没有智能马桶'});
+checkRecommendation(scopedAnswer,scopedDenial.snapshot,scopedDenial.sources);
+scopedAnswer=answer(scopedDenial.snapshot);scopedAnswer.verification_shortlist[0].reasons[0].explanation='其他房型的住客短引“没有智能马桶”，不能据此认定目标房型没有智能马桶；这间目标房型没有智能马桶。';assertCode(()=>checkRecommendation(scopedAnswer,scopedDenial.snapshot,scopedDenial.sources),'unsafe_verification_claim');
 const laundry=input();laundry.people[0].requireLaundry=true;const laundrySnapshot=validateSnapshot(laundry);
 for(const unsafe of ['这家的智能马桶已确认，提供免费自助洗衣。','免费自助洗衣已确认。']){bad=answer(laundrySnapshot.snapshot);bad.verification_shortlist[0].reasons[0].explanation=unsafe;assertCode(()=>checkRecommendation(bad,laundrySnapshot.snapshot,laundrySnapshot.sources),'unsafe_verification_claim');}
 bad=answer(snapshot);bad.verification_shortlist[0].reasons[0].explanation='仅是核实顺序，非正式推荐，不能保证入住体验。';checkRecommendation(bad,snapshot,sources);
@@ -129,4 +148,12 @@ assert.equal(body.result.recommendations.length,0);assert.equal(body.result.veri
 assert.equal(modelPrompt.verification_candidates.length,2);assert.equal(modelSchema.properties.recommendations.maxItems,0);assert.equal(modelSchema.properties.verification_shortlist.maxItems,2);
 const requirements=new Map(modelPrompt.member_requirements.map(p=>[p.member_id,p]));assert(requirements.get('one').required_condition_ids.includes('freeCancel'));assert(!requirements.get('two').required_condition_ids.includes('freeCancel'));assert(requirements.get('two').required_condition_ids.includes('breakfast'));assert(!requirements.get('one').required_condition_ids.includes('breakfast'));
 assert.equal(JSON.stringify(raw),before);
+// Denial errors use the existing one-repair path; the rejected original is
+// never replaced or silently marked as a successful answer.
+let denialCalls=0;
+const repairedDenial=await handleAIRequest(new Request('https://fixture.test/api/ai/recommend',{method:'POST',body:JSON.stringify(raw)}),{OPENAI_API_KEY:'mock-placeholder'},{local:true,fetcher:async()=>{
+ denialCalls++;const out=answer(snapshot);if(denialCalls===1)out.verification_shortlist[0].reasons[0].explanation=actualUnknownDenial;
+ return Response.json({status:'completed',id:'mock-denial-'+denialCalls,model:'mock-model',output:[{content:[{type:'output_text',text:JSON.stringify(out)}]}]});
+}});
+assert.equal(repairedDenial.status,200);const denialBody=await repairedDenial.json();assert.equal(denialCalls,2);assert.equal(denialBody.attempts[0].code,'unsafe_verification_claim');assert.equal(denialBody.attempts[0].verification_issue.rule_id,'unknown_as_denied');assert.equal(denialBody.attempts[1].status,'accepted');assert(!JSON.stringify(denialBody.result).includes(actualUnknownDenial));
 console.log('PASS independent verification shortlist: reference packages and unknown facilities may yield a scoped work queue while formal stays zero; explicit conflicts, price/meal/bed/cancel mismatches, absent evidence, wrong-room sources, duplicates, missing members, unsafe claims and omitted gaps are guarded; mock citation repair and preference preservation pass.');

@@ -1,6 +1,15 @@
 'use strict';
 // Presentation only: prices, source records, preferences and eligibility stay intact.
 const detailedAIResultHTML=resultHTML;
+function referenceSelectionHTML(result){
+ const recs=result.recommendations||[];
+ if(!recs.length)return '';
+ return '<section class="reference-selection"><h3>参考价范围内的选择</h3><p class="decision-muted">必要条件证据已核齐；以下按当前匹配套餐的房型页参考价选择。</p><div class="verification-grid">'+recs.map((x,i)=>{
+  const h=state.hotels.find(h=>h.id===x.hotel_id),amount=x.reference_cny_per_room_per_night;
+  const price=typeof amount==='number'&&Number.isFinite(amount)&&amount>0?'¥'+E(amount):'参考价待确认';
+  return '<article class="hotel-card recommended reference-selection-card" data-selected-offer="'+E(x.selected_offer_id)+'"><span class="rank">参考价'+(i===0?'首选':'备选')+'</span>'+decisionHotelTitle(h?.name||'候选酒店')+'<p>'+E(x.headline)+'</p><p class="sub">'+E(x.target_room||'目标房型待确认')+' · <strong>'+price+'</strong> / 每间每晚 · 房型页参考价</p>'+(x.reasons||[]).map(a=>'<section class="ai-reason"><b>对'+E(state.people.find(p=>p.id===a.member_id)?.name||'同行人')+'来说</b><p>'+E(a.explanation)+'</p>'+citationsHTML(a.citations)+'</section>').join('')+((x.tradeoffs||[]).length?'<div class="tradeoff"><b>需要接受的取舍</b>'+x.tradeoffs.map(t=>'<p>'+E(t.explanation)+'</p>'+citationsHTML(t.citations)).join('')+'</div>':'')+'<p class="decision-muted">参考价不是最终应付价；最终税费、完整取消责任和可订性仍需预订前核对。</p></article>';
+ }).join('')+'</div></section>';
+}
 function verificationShortlistHTML(result){
  const rows=HotelDecisionSummary.build(decisionScopedHotels(),state.people,state.trip),formal=new Set((result.recommendations||[]).map(x=>x.hotel_id));
  const list=(result.verification_shortlist||[]).filter(x=>{
@@ -18,18 +27,19 @@ resultHTML=function(){
  const saved=state.aiResult;
  if(!saved)return '<p class="decision-muted">可让 AI 解释评价与同行取舍。</p>';
  if(saved.fingerprint!==fingerprint())return '<p class="decision-muted">资料已更新，点上方按钮重新解读。</p>';
- const r=saved.data.result,recs=r.recommendations||[],verification=verificationShortlistHTML(r);
- const summary=recs.length?'<p class="ai-compact-status good">AI 已完成 · '+(recs.length===2?'已给出首选和备选':'已有1家正式候选')+'</p><ol class="ai-shortlist">'+recs.map(x=>'<li><b>'+E(state.hotels.find(h=>h.id===x.hotel_id)?.name)+'</b> · '+E(x.headline)+'</li>').join('')+'</ol>':verification?'<p class="ai-compact-status good">AI 已完成 · 已整理优先核实清单</p><p class="decision-muted">正式入住条件仍未核齐，先按下方顺序补证。</p>':'<p class="ai-compact-status good">AI 已完成解读 · 尚不能给出正式首选、备选</p><p class="decision-muted">目前资料不足或存在条件冲突，请先处理具体缺口。</p>';
+ const r=saved.data.result,recs=r.recommendations||[],reference=(r.decision_scope||saved.data.decision_scope)==='reference_selection',verification=verificationShortlistHTML(r);
+ const summary=recs.length?'<p class="ai-compact-status good">AI 已完成 · '+(reference?(recs.length===2?'已给出参考价首选和备选':'已有1家参考价候选'):(recs.length===2?'已给出首选和备选':'已有1家正式候选'))+'</p><ol class="ai-shortlist">'+recs.map((x,i)=>'<li><b>'+E(state.hotels.find(h=>h.id===x.hotel_id)?.name)+'</b> · '+(reference?'参考价'+(i===0?'首选':'备选')+' · ':'')+E(x.headline)+'</li>').join('')+'</ol>':reference?'<p class="ai-compact-status good">AI 已完成解读 · 参考价选择尚缺必要证据</p><p class="decision-muted">目前资料不足或存在条件冲突，请先处理具体缺口。</p>':verification?'<p class="ai-compact-status good">AI 已完成 · 已整理优先核实清单</p><p class="decision-muted">正式入住条件仍未核齐，先按下方顺序补证。</p>':'<p class="ai-compact-status good">AI 已完成解读 · 尚不能给出正式首选、备选</p><p class="decision-muted">目前资料不足或存在条件冲突，请先处理具体缺口。</p>';
  const assessments=r.review_assessments||[],reviews=assessments.map(a=>'<details class="decision-details"'+(assessments.length===1?' open':'')+'><summary>'+E(state.hotels.find(h=>h.id===a.hotel_id)?.name)+' · 评价解读</summary><p>'+E(a.explanation)+'</p>'+citationsHTML(a.citations)+'</details>').join('');
  const meta='<p class="decision-muted">'+(state.mode==='demo'?'虚构演示资料':'我的行程 · '+E(state.trip.city))+' · '+E(new Date(saved.data.generated_at).toLocaleString('zh-CN'))+(saved.data.elapsed_ms?' · '+Math.round(saved.data.elapsed_ms/1000)+' 秒':'')+'</p>';
- return summary+meta+verification+reviews+'<details class="decision-details ai-full-record"><summary>完整 AI 记录与所有引用</summary>'+detailedAIResultHTML()+'</details>';
+ return summary+meta+(reference?referenceSelectionHTML(r):'')+verification+reviews+'<details class="decision-details ai-full-record"><summary>完整 AI 记录与所有引用</summary>'+detailedAIResultHTML()+'</details>';
 };
 
 function decisionScopedHotels(){
+ const reference=state.mode==='trip'&&typeof aiRequestDecisionScope==='function'&&aiRequestDecisionScope()==='reference_selection';
  return comparisonHotels().map(h=>{
   if(!h.quoteBundle)return h;
   const {derivedHotel,...packageMatch}=HotelPackageMatch.build(h,state.people,state.trip);
-  return {...derivedHotel,packageMatch};
+  return {...derivedHotel,...(reference?{price:null}:{}),packageMatch};
  });
 }
 function decisionOffers(h){
@@ -59,10 +69,19 @@ function decisionHotelTitle(name){
  const branch=String(name).match(/[（(]([^）)]+)[）)]/),brand=String(name).split(/[（(]/)[0].split('|')[0];
  return '<h3 title="'+E(name)+'">'+E(brand)+'</h3>'+(branch?'<p class="decision-branch">'+E(branch[1])+'</p>':'');
 }
+function referenceReady(row){
+ return state.mode==='trip'&&(state.trip?.children??0)===0&&typeof aiRequestDecisionScope==='function'&&aiRequestDecisionScope()==='reference_selection'&&!!row.hotel.packageMatch?.selectedOffer&&row.budget.basis==='reference'&&row.budget.within===true&&!row.conflicts.length&&row.missing.every(x=>x.key==='budget');
+}
+function decisionConflictLabel(conflict){
+ const flags={smart:'requireSmart',laundry:'requireLaundry',mold:'avoidMold',budget:'budgetHard',metro:'transitHard'};
+ const owners=(state.people||[]).filter(p=>(flags[conflict.key]&&p[flags[conflict.key]])||(typeof HotelCriteria!=='undefined'&&HotelCriteria.conditions(p).some(c=>c.id===conflict.key&&c.mode==='must')));
+ const names=[...new Set(owners.map(p=>p.name||'同行人'))];
+ return conflict.label+(names.length?'（'+names.join('、')+'的必须项）':'');
+}
 function decisionCardHTML(row){
- const h=row.hotel,match=h.packageMatch||(h.quoteBundle?HotelPackageMatch.build(h,state.people,state.trip):null),unmatched=!!(match?.enabled&&!match.selectedOffer),offers=decisionOffers(h),facilityGaps=row.missing.filter(x=>!['budget','breakfast','freeCancel','twinBeds'].includes(x.key)),budget=row.budget;
- const cls=unmatched?'unmatched':row.code==='excluded'||row.code==='over_reference_budget'?'excluded':row.formalEligible?'ready':'pending';
- const label=unmatched?'未找到匹配套餐':row.code==='excluded'?'必要条件有冲突':row.code==='over_reference_budget'?'当前参考价超预算':row.formalEligible?(h.demo?'满足演示条件':'资料显示满足要求'):match?.selectedOffer?'套餐已匹配 · 待核必要证据':'可继续核实';
+ const h=row.hotel,match=h.packageMatch||(h.quoteBundle?HotelPackageMatch.build(h,state.people,state.trip):null),unmatched=!!(match?.enabled&&!match.selectedOffer),offers=decisionOffers(h),facilityGaps=row.missing.filter(x=>!['budget','breakfast','freeCancel','twinBeds'].includes(x.key)),budget=row.budget,reference=referenceReady(row);
+ const cls=unmatched?'unmatched':row.code==='excluded'||row.code==='over_reference_budget'?'excluded':row.formalEligible||reference?'ready':'pending';
+ const label=unmatched?'未找到匹配套餐':row.code==='excluded'?'必要条件有冲突':row.code==='over_reference_budget'?'当前参考价超预算':reference?'参考价条件证据已齐，可生成选择':row.formalEligible?(h.demo?'满足演示条件':'资料显示满足要求'):match?.selectedOffer?'套餐已匹配 · 待核必要证据':'可继续核实';
  const pair='<div class="decision-prices">'+decisionPriceCell(offers[0],'ctrip',match)+decisionPriceCell(offers[1],'tongcheng',match)+'</div><p class="decision-price-note">'+E(decisionPriceNote(offers))+'</p>';
  const unmatchedPrice=offers.some(Boolean)?'<details class="decision-details nonmatching-packages"><summary>查看非匹配套餐参考价</summary>'+pair+'<p class="decision-muted">这些金额对应当前不满足或未核清要求的套餐，不代表所需套餐价格。</p></details>':'';
  const price=unmatched?'<div class="decision-no-package"><b>当前没有匹配报价</b><p>'+match.noMatchReasons.map(x=>E(x.label)).join('；')+'</p></div>':offers.some(Boolean)?pair:'<div class="decision-single-price"><strong>'+(budget.amount!=null?'¥'+E(budget.amount):'尚无本次价格')+'</strong><small>'+(budget.basis==='reference'?'参考价 / 间 / 晚':budget.basis==='verified'?(h.demo?'演示价 / 间 / 晚':'录入价 / 间 / 晚'):'')+'</small></div>';
@@ -71,10 +90,10 @@ function decisionCardHTML(row){
  const room=h.room||'尚未选择具体房型';
  const details='<details class="decision-details"><summary>房型、来源与可选条件</summary>'+offers.filter(Boolean).map(o=>'<p><b>'+E(o.platform)+'</b> · '+E(o.room)+'<br>'+E(o.breakfastText)+' · '+E(o.cancellation)+' · '+E(o.payment||'付款未注明')+'</p>'+link(o.source,'打开平台原页 ↗')+'<p class="decision-muted">采集 '+E(new Date(o.capturedAt).toLocaleString('zh-CN'))+'</p>').join('')+row.known.filter(x=>['opened','renovated'].includes(x.key)).map(x=>'<p>'+E(x.label)+'</p>').join('')+(row.optionalUnknown.length?'<p class="decision-muted">以下是可选偏好，缺资料不阻断推荐：'+row.optionalUnknown.map(x=>E(x.label)).join('、')+'。</p>':'')+'<div class="decision-card-actions"><button class="text-button" data-action="edit-hotel" data-id="'+E(h.id)+'">编辑资料</button><button class="text-button" data-action="add-evidence" data-id="'+E(h.id)+'">补充评价</button></div></details>';
  const visibleConflicts=unmatched?row.conflicts.filter(x=>!['breakfast','freeCancel','twinBeds','budget'].includes(x.key)):row.conflicts;
- return '<article class="decision-card decision-'+cls+'" data-decision-hotel="'+E(h.id)+'"><div class="decision-card-title">'+decisionHotelTitle(h.name)+'<span class="decision-badge '+cls+'">'+label+'</span></div><p class="decision-room">'+(unmatched?'已采房型：':'')+E(room)+'</p>'+price+'<p class="decision-budget '+(!unmatched&&budget.within===false?'bad':'')+'">'+E(budgetText)+(budget.ceiling!=null?' · 上限 ¥'+E(budget.ceiling):'')+'</p>'+(visibleConflicts.length?'<div class="decision-conflict"><b>必要条件有冲突</b><p>'+visibleConflicts.map(x=>E(x.label)).join('；')+'</p></div>':'')+(known.length?'<ul class="decision-known">'+known.map(x=>'<li>'+E(x.label)+'</li>').join('')+'</ul>':'')+(facilityGaps.length?'<div class="decision-gap"><b>设施与体验缺 '+facilityGaps.length+' 项必要证据</b><p>'+facilityGaps.map(x=>E(x.label)).join('、')+'</p></div>':!row.formalEligible&&!unmatched?'<p class="decision-gap">房价或必要套餐信息仍需核对。</p>':'')+'<div class="decision-card-footer"><button class="text-button" data-action="evidence-hotel" data-id="'+E(h.id)+'">查看 '+(h.evidence||[]).length+' 条资料 ↗</button></div>'+unmatchedPrice+details+'</article>';
+ return '<article class="decision-card decision-'+cls+'" data-decision-hotel="'+E(h.id)+'"><div class="decision-card-title">'+decisionHotelTitle(h.name)+'<span class="decision-badge '+cls+'">'+label+'</span></div><p class="decision-room">'+(unmatched?'已采房型：':'')+E(room)+'</p>'+price+'<p class="decision-budget '+(!unmatched&&budget.within===false?'bad':'')+'">'+E(budgetText)+(budget.ceiling!=null?' · 上限 ¥'+E(budget.ceiling):'')+'</p>'+(visibleConflicts.length?'<div class="decision-conflict"><b>必要条件有冲突</b><p>'+visibleConflicts.map(x=>E(decisionConflictLabel(x))).join('；')+'</p></div>':'')+(known.length?'<ul class="decision-known">'+known.map(x=>'<li>'+E(x.label)+'</li>').join('')+'</ul>':'')+(facilityGaps.length?'<div class="decision-gap"><b>设施与体验缺 '+facilityGaps.length+' 项必要证据</b><p>'+facilityGaps.map(x=>E(x.label)).join('、')+'</p></div>':!row.formalEligible&&!unmatched&&!reference?'<p class="decision-gap">房价或必要套餐信息仍需核对。</p>':'')+(reference?'<p class="decision-muted">最终含税应付价与完整取消责任仍需预订前核对。</p>':'')+'<div class="decision-card-footer"><button class="text-button" data-action="evidence-hotel" data-id="'+E(h.id)+'">查看 '+(h.evidence||[]).length+' 条资料 ↗</button></div>'+unmatchedPrice+details+'</article>';
 }
 function decisionSummaryHTML(hotels){
- const rows=HotelDecisionSummary.build(hotels,state.people,state.trip),quoteRows=rows.filter(r=>r.hotel.packageMatch?.enabled),matched=quoteRows.filter(r=>r.hotel.packageMatch.selectedOffer).length,pending=rows.filter(r=>r.missing.length).length;
+ const rows=HotelDecisionSummary.build(hotels,state.people,state.trip),quoteRows=rows.filter(r=>r.hotel.packageMatch?.enabled),matched=quoteRows.filter(r=>r.hotel.packageMatch.selectedOffer).length,pending=rows.filter(r=>r.missing.length&&!referenceReady(r)).length;
  const captures=hotels.flatMap(h=>(h.quoteBundle?.offers||[]).map(o=>Date.parse(o.capturedAt))).filter(Number.isFinite),first=captures.length?new Date(Math.min(...captures)):null,last=captures.length?new Date(Math.max(...captures)):null;
  const snapshot=first?'<p class="decision-snapshot">报价快照 · '+E(first.toLocaleString('zh-CN'))+' — '+E(last.toLocaleTimeString('zh-CN'))+'</p>':'';
  const zero=quoteRows.length&&!matched?'<div class="decision-zero" role="status"><h3>这轮没有找到符合要求的套餐</h3><p>'+[...new Set(quoteRows.flatMap(r=>r.hotel.packageMatch.noMatchReasons.map(x=>x.label)))].slice(0,3).map(E).join('；')+'。</p><p class="decision-muted">这是本次已采范围的结果，不表示酒店没有其他套餐。</p><button class="secondary" data-collector="START">重新查找匹配套餐 →</button></div>':'';

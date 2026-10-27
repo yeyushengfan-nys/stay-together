@@ -1,10 +1,8 @@
 # 本次公开文件清单
 
-来源：已部署网站 v51（源码59a905f）、扩展0.2.7。仅公开此清单中的文件；不含原始私人证据、聊天、实际部署配置或Git历史。
+当前公开源码对应v55，源提交682d026，扩展0.2.7。仅包含下列文件，不含聊天、客服原文、私人证据或实际部署身份。
 
-共 238 个文件；此清单包含自身。
-
-## 文件
+共243个文件，含此清单。
 
 ```text
 .env.example
@@ -222,6 +220,7 @@ tests/test-audit-scope.mjs
 tests/test-citation-repair.mjs
 tests/test-collector-status-recovery.mjs
 tests/test-collector.mjs
+tests/test-conflict-ownership-ui.mjs
 tests/test-decision-summary.mjs
 tests/test-decision-ui.mjs
 tests/test-evidence-preservation.mjs
@@ -234,7 +233,11 @@ tests/test-reader-selection-plans.mjs
 tests/test-recommendation-member-context.mjs
 tests/test-recommendation-schema.mjs
 tests/test-reference-prices.mjs
+tests/test-reference-selection-ui.mjs
+tests/test-reference-selection.mjs
+tests/test-rejection-diagnostics.mjs
 tests/test-review-coverage.mjs
+tests/test-review-scope.mjs
 tests/test-selection-client.mjs
 tests/test-selection.mjs
 tests/test-shenzhen-name-match.mjs
