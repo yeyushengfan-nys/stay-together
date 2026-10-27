@@ -67,7 +67,7 @@
   const packageFacts={...root.StayQuoteEvidence.facts(derivedBundle,room),twinBeds:target?checks.find(x=>x.offer.id===target.id)?.facts.twinBeds??null:null};
   // Selecting a different meal plan may select a different room. Evidence for
   // the previous room cannot silently become evidence for this one.
-  const roomChanged=key(room)!==key(hotel.room),scopedKeys=['smart','mold','quiet','nonSmoking','accessible','family','bathtub','desk','view'];
+  const roomChanged=key(room)!==key(hotel.room),scopedKeys=['smart','smartWash','mold','quiet','nonSmoking','accessible','family','bathtub','desk','view'];
   const reset=roomChanged?Object.fromEntries(scopedKeys.map(k=>[k,null])):{};
   const evidence=(hotel.evidence||[]).map(e=>roomChanged&&Object.keys(e.claims||{}).some(k=>scopedKeys.includes(k))&&key(e.room)!==key(room)?{...e,confirmed:false}:e);
   const packageChanged=roomChanged||target?.id!==raw.selected_offer_id;

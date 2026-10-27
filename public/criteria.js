@@ -1,6 +1,6 @@
 // Shared by the browser and server. Thresholds are user choices, not industry ratings.
 (function(root){
- const catalog=[['quiet','安静／隔音'],['nonSmoking','无烟客房'],['twinBeds','双床房'],['breakfast','包含早餐'],['freeCancel','免费取消'],['parking','停车位'],['family','适合儿童／亲子设施'],['petFriendly','允许携带宠物'],['accessible','无障碍客房'],['bathtub','浴缸'],['gym','健身房'],['pool','泳池'],['invoice','可开所需发票'],['desk','办公桌／办公条件'],['view','景观符合期望'],['lateCheckin','支持晚到入住']].map(([id,label])=>({id,label}));
+ const catalog=[['quiet','安静／隔音'],['nonSmoking','无烟客房'],['twinBeds','双床房'],['breakfast','包含早餐'],['freeCancel','免费取消'],['parking','停车位'],['family','适合儿童／亲子设施'],['petFriendly','允许携带宠物'],['accessible','无障碍客房'],['bathtub','浴缸'],['gym','健身房'],['pool','泳池'],['invoice','可开所需发票'],['desk','办公桌／办公条件'],['view','景观符合期望'],['lateCheckin','支持晚到入住'],['smartWash','马桶清洗功能（臀洗／妇洗）']].map(([id,label])=>({id,label}));
  const allowed=new Set(catalog.map(x=>x.id));
  function conditions(p){return (p.conditions||[]).filter(c=>allowed.has(c.id)&&['prefer','must'].includes(c.mode)).map(c=>({id:c.id,mode:c.mode,label:catalog.find(x=>x.id===c.id).label}));}
  function policy(p={}){return {newWithin:Number.isInteger(p.newWithin)&&p.newWithin>=0&&p.newWithin<=10?p.newWithin:3,oldAfter:Number.isInteger(p.oldAfter)&&p.oldAfter>=4&&p.oldAfter<=30?p.oldAfter:8,allowRenovation:!!p.allowRenovation};}

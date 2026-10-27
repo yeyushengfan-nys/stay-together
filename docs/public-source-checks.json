@@ -1,7 +1,7 @@
 {
   "kind": "offline_mock_regression_not_real_users",
-  "count": 42,
-  "passed": 42,
+  "count": 45,
+  "passed": 45,
   "failed": 0,
   "tests": [
     {
@@ -165,7 +165,19 @@
       "exit_code": 0
     },
     {
+      "file": "tests/test-smart-wash-boundary.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-smart-wash.mjs",
+      "exit_code": 0
+    },
+    {
       "file": "tests/test-tongcheng-loading.mjs",
+      "exit_code": 0
+    },
+    {
+      "file": "tests/test-verification-review-quote.mjs",
       "exit_code": 0
     },
     {
@@ -175,8 +187,8 @@
   ],
   "real_network_blocked": true,
   "date": "2026-10-27",
-  "source_version": "Sites v56 / extension 0.2.7",
-  "source_commit": "708c28530ca578e16a10280372b17db5eb7918d5",
+  "source_version": "Sites v58 / extension 0.2.7",
+  "source_commit": "01ee1b47bd92aa351b13255dfae743d6958fb863",
   "public_copy_framework_build_this_iteration": false,
   "source_framework_build_and_deployment": "passed",
   "public_copy_clean_dependency_install_verified": false,

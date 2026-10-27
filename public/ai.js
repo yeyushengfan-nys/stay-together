@@ -3,7 +3,7 @@
 let aiStatus=null, aiBusy=false, aiMessage='', extraction=null;
 function analysisHotels(){const scoped=typeof decisionScopedHotels==='function'?decisionScopedHotels():comparisonHotels(),matched=scoped.filter(h=>h.packageMatch?.selectedOffer);return (matched.length?matched:scoped).slice(0,3).map(({packageMatch,...h})=>h);}
 function aiRequestDecisionScope(){return state.mode==='trip'?'reference_selection':'final';}
-const snapshot=()=>({analysis_version:13,decision_scope:aiRequestDecisionScope(),mode:state.mode,scenario:state.functionalTest?'functional_test':'personal_trip',preferencesConfirmed:state.preferencesConfirmed,trip:state.trip,people:state.people,hotels:analysisHotels()});
+const snapshot=()=>({analysis_version:15,decision_scope:aiRequestDecisionScope(),mode:state.mode,scenario:state.functionalTest?'functional_test':'personal_trip',preferencesConfirmed:state.preferencesConfirmed,trip:state.trip,people:state.people,hotels:analysisHotels()});
 const fingerprint=()=>JSON.stringify(snapshot());
 const billing='https://platform.openai.com/settings/organization/billing/overview';
 function rejectedAIDetailsHTML(err){

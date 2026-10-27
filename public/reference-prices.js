@@ -21,7 +21,7 @@
  function retainedEvidence(old,room){
   // Keep a user's completed source checks. A new price search is not a reason
   // to undo a review, but it must not promote old-room or old-package facts.
-  const roomKeys=new Set(['smart','mold','quiet','nonSmoking','accessible','family','bathtub','desk','view']);
+  const roomKeys=new Set(['smart','smartWash','mold','quiet','nonSmoking','accessible','family','bathtub','desk','view']);
   const packageKeys=new Set(['price','referencePrice','nightly','total','taxConfirmed','breakfast','freeCancel','payment','cancellation']);
   const genericRooms=new Set(['','未注明','未标注','房型未注明','房型未知','未知','待确认','范围未明确','酒店','酒店级','酒店级资料','酒店级信息','全店','全店资料','hotel','allrooms','目标房型未取得','未取得匹配房型','具体房型待选择','具体房型待确认'].map(key));
   const target=key(room),knownTarget=!genericRooms.has(target),roomChanged=key(old?.room)!==target;

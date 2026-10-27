@@ -114,9 +114,14 @@ for(const statement of [
  '我的底线里包含智能、免费取消、可开所需发票和支持晚到入住。所需设施仍待确认。',
  '你的硬性点里还需要智能马桶、可开所需发票和支持晚到入住，而这些目前都还没核实。',
  '模拟甲的底线里包含支持晚到入住。现有资料未确认。',
- '住客评价只代表当时，不保证本次隔音。',
- '现有“很安静”来自双床房，不可直接当作这间大床房已确认安静。'
+ '住客评价只代表当时，不保证本次隔音。'
 ]){const candidate=answer(requirementData.snapshot);candidate.verification_shortlist[0].reasons[0].explanation=statement;checkRecommendation(candidate,requirementData.snapshot,requirementData.sources);}
+const scopedQuietInput=input();scopedQuietInput.hotels[0].room='模拟大床房';for(const o of scopedQuietInput.hotels[0].quoteBundle.offers){o.room='模拟大床房';o.bed='1张大床';}
+scopedQuietInput.hotels[0].evidence.push({id:'synthetic-other-room-quiet',confirmed:true,platform:'合成测试材料',room:'模拟双床房',text:'合成材料，其他房型的住客短引：“很安静”。',claims:{}});
+const scopedQuiet=validateSnapshot(scopedQuietInput),scopedQuietAnswer=answer(scopedQuiet.snapshot);
+scopedQuietAnswer.verification_shortlist[0].reasons[0].explanation='现有“很安静”来自双床房，不可直接当作这间大床房已确认安静。';
+scopedQuietAnswer.verification_shortlist[0].reasons[0].citations.push({source_id:'synthetic-other-room-quiet',quote:'很安静'});
+checkRecommendation(scopedQuietAnswer,scopedQuiet.snapshot,scopedQuiet.sources);
 for(const statement of [
  '我要求支持晚到入住，这家支持晚到入住。',
  '我的底线里包含支持晚到入住所以这家实际支持晚到入住。',

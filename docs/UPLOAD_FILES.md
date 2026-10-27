@@ -1,8 +1,8 @@
 # 本次公开文件清单
 
-当前公开源码对应v56，源提交708c285，扩展0.2.7。仅包含下列文件，不含聊天、客服原文、私人证据或实际部署身份。
+当前公开源码对应v58，源提交01ee1b4，扩展0.2.7。只含下列文件，不含聊天、客服原文、私人证据或真实部署身份。
 
-共246个文件，含此清单。
+共249个文件，含本清单。
 
 ```text
 .env.example
@@ -244,7 +244,10 @@ tests/test-review-scope.mjs
 tests/test-selection-client.mjs
 tests/test-selection.mjs
 tests/test-shenzhen-name-match.mjs
+tests/test-smart-wash-boundary.mjs
+tests/test-smart-wash.mjs
 tests/test-tongcheng-loading.mjs
+tests/test-verification-review-quote.mjs
 tests/test-verification-shortlist.mjs
 tsconfig.json
 vendor/shadcn-tailwind-4.13.0.LICENSE.md
